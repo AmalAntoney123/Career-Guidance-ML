@@ -60,57 +60,55 @@ if ($userData) {
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 
-        <script>
-            // Function to update user profile data via AJAX
-            function updateUserProfile(field, value) {
-                $.ajax({
-                    url: 'update_profile.php',
-                    type: 'POST',
-                    data: { field: field, value: value },
-                    success: function (response) {
-                        // Show toast notification
-                        showToast('Value updated successfully!');
-                    }
-                });
+        <style>
+            .question-container-main {
+                position: relative;
             }
 
-            // Function to show toast notification
-            function showToast(message) {
-                // Implement toast notification display here (using Bootstrap Toast or any other library)
-                // For example, using Bootstrap 5 Toast component:
-                var toastEl = document.getElementById('toast');
-                var bsToast = new bootstrap.Toast(toastEl);
-                toastEl.querySelector('.toast-body').textContent = message;
-                bsToast.show();
+            .question-container {
+                position: absolute;
+                top: 0;
+                width: 100%;
+                opacity: 0;
+                transform: translateX(-20px);
+                transition: opacity 0.4s, transform 1.0s;
             }
 
-            // Event listener for input field blur
-            $('input').blur(function () {
-                var fieldName = $(this).attr('name');
-                var fieldValue = $(this).val();
-                // Call updateUserProfile function when the input field loses focus
-                updateUserProfile(fieldName, fieldValue);
+            .question-container.active {
+                opacity: 1;
+                transform: translateX(0);
+            }
 
-            });
-            function enableForm() {
-                var form = document.getElementById('profileForm');
-                var inputs = form.getElementsByTagName('input');
-                for (var i = 0; i < inputs.length; i++) {
-                    inputs[i].disabled = false;
-                }
-                $('.updateBtn').hide();
-                $('.saveBtn').show();
+            .question-nav {
+                position: absolute;
+                display: flex;
+                top: 200px;
+                justify-content: space-between;
             }
-            function disableForm() {
-                var form = document.getElementById('profileForm');
-                var inputs = form.getElementsByTagName('input');
-                for (var i = 0; i < inputs.length; i++) {
-                    inputs[i].disabled = true;
-                }
-                $('.updateBtn').show();
-                $('.saveBtn').hide();
+
+            /* Center the card and make it more rounded */
+            .card {
+                border-radius: 20px;
             }
-        </script>
+
+            /* Increase the text size */
+            .card-title,
+            .card-text {
+                font-size: 1.2em;
+                /* Adjust the font size as needed */
+            }
+
+            /* Give a background color to the body */
+            body.bg-light {
+                background-color: #f8f9fa;
+                /* Light grey background */
+            }
+
+            /* Center the navigation buttons */
+            .question-nav {
+                justify-content: center;
+            }
+        </style>
 
     </head>
 
@@ -143,30 +141,65 @@ if ($userData) {
             </div>
         </header>
 
-        <main id="main">
+        <main id="main" style="height:500px;">
 
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <form id="questionForm" method="post">
+                            <div class="question-container-main">
+                                <!-- Question 1 -->
+                                <div class="card mb-3 question-container bg-light active" id="question1">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Hi Amal</h5>
+                                        <p class="card-text">What course did u pursue in highschool?</p>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="options1" id="option2-1"
+                                                value="commerce">
+                                            <label class="form-check-label" for="option2-1">Commerce</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="options1" id="option2-2"
+                                                value="science">
+                                            <label class="form-check-label" for="option2-2">Science</label>
+                                        </div>
 
-            <div class="container my-4">
-                <div class="row">
-                    <div class="col-md-3 mt-3">
-                        <div class="list-group">
-                            <a href="user.php" class="list-group-item list-group-item-action">Profile</a>
-                            <a href="#" class="list-group-item list-group-item-action active">Career Path</a>
-                        </div>
-                    </div>
-                    <div class="col-md-9 mt-3">
-                        <div class="h-100 d-flex justify-content-center align-items-center">
-                            <div class="card rounded bg-light" style="height:500px;width:100%">
-                                <div class="card-body">
-                                    <div class="text-center" style="margin:20%">
-                                        <a href="career_quiz.php" class="btn btn-warning btn-lg">Find Your Career</a>
+                                        <!-- Add more options as needed -->
+                                    </div>
+                                </div>
+                                <!-- Question 2 -->
+                                <div class="card mb-3 question-container" id="question2">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Question 2</h5>
+                                        <p class="card-text">This is the question text.</p>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="options2" id="option2-1"
+                                                value="option1">
+                                            <label class="form-check-label" for="option2-1">Option 1</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="options2" id="option2-2"
+                                                value="option2">
+                                            <label class="form-check-label" for="option2-2">Option 2</label>
+                                        </div>
+                                        <!-- Add more options as needed -->
+                                    </div>
+                                </div>
+                                <div>
+                                    <!-- Add more questions as needed -->
+                                    <div class="d-flex justify-content-between mt-3 question-nav">
+                                        <button class="btn btn-secondary" type="button" id="prevBtn">Previous</button>&nbsp;
+                                        <button class="btn btn-warning" type="button" id="nextBtn">Next</button>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+
+                        </form>
+
                     </div>
                 </div>
             </div>
+
 
         </main><!-- End #main -->
 
@@ -181,11 +214,11 @@ if ($userData) {
                             <div class="footer-info">
                                 <h3>Career-Vertex</h3>
                                 <!--<p>
-                A108 Adam Street <br>
-                NY 535022, USA<br><br>
-                <strong>Phone:</strong> +1 5589 55488 55<br>
-                <strong>Email:</strong> info@example.com<br>
-              </p>-->
+        A108 Adam Street <br>
+        NY 535022, USA<br><br>
+        <strong>Phone:</strong> +1 5589 55488 55<br>
+        <strong>Email:</strong> info@example.com<br>
+      </p>-->
                                 <div class="social-links d-flex mt-3">
                                     <a href="#" class="d-flex align-items-center justify-content-center"><i
                                             class="bi bi-twitter"></i></a>
@@ -254,8 +287,34 @@ if ($userData) {
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 
+        <script>
+            let currentQuestionIndex = 1;
+
+            document.getElementById('prevBtn').addEventListener('click', function () {
+                if (currentQuestionIndex > 1) {
+                    document.getElementById(`question${currentQuestionIndex}`).classList.remove('active');
+                    currentQuestionIndex--;
+                    document.getElementById(`question${currentQuestionIndex}`).classList.add('active');
+                }
+            });
+
+            document.getElementById('nextBtn').addEventListener('click', function () {
+                if (currentQuestionIndex < 2) { // Adjust this number based on the total number of questions
+                    document.getElementById(`question${currentQuestionIndex}`).classList.remove('active');
+                    currentQuestionIndex++;
+                    document.getElementById(`question${currentQuestionIndex}`).classList.add('active');
+                }
+            });
+
+        </script>
     </body>
+
 
     </html>
 
