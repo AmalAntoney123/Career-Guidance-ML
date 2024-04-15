@@ -82,7 +82,7 @@ if ($userData) {
             .question-nav {
                 position: absolute;
                 display: flex;
-                top: 200px;
+                top: 320px;
                 justify-content: space-between;
             }
 
@@ -151,7 +151,7 @@ if ($userData) {
                                 <!-- Question 1 -->
                                 <div class="card mb-3 question-container bg-light active" id="question1">
                                     <div class="card-body">
-                                        <h5 class="card-title">Hi Amal</h5>
+                                        <h5 class="card-title">Hi <?=ucwords($fullName)?></h5>
                                         <p class="card-text">What course did u pursue in highschool?</p>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="options1" id="option2-1"
@@ -163,24 +163,54 @@ if ($userData) {
                                                 value="science">
                                             <label class="form-check-label" for="option2-2">Science</label>
                                         </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="options1" id="option2-2"
+                                                value="maths">
+                                            <label class="form-check-label" for="option2-2">Maths</label>
+                                        </div>
 
                                         <!-- Add more options as needed -->
                                     </div>
                                 </div>
                                 <!-- Question 2 -->
-                                <div class="card mb-3 question-container" id="question2">
+                                <div class="card mb-3 question-container bg-light" id="question2">
                                     <div class="card-body">
-                                        <h5 class="card-title">Question 2</h5>
-                                        <p class="card-text">This is the question text.</p>
+                                        <h5 class="card-title">Hi <?=ucwords($fullName)?></h5>
+                                        <p class="card-text">How much do you enjoy delving into the basics of managing digital information?</p>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="options2" id="option2-1"
                                                 value="option1">
-                                            <label class="form-check-label" for="option2-1">Option 1</label>
+                                            <label class="form-check-label" for="option2-1">Not Interested</label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="options2" id="option2-2"
                                                 value="option2">
-                                            <label class="form-check-label" for="option2-2">Option 2</label>
+                                            <label class="form-check-label" for="option2-2">Poor</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="options2" id="option2-2"
+                                                value="option2">
+                                            <label class="form-check-label" for="option2-2">Beginner</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="options2" id="option2-2"
+                                                value="option2">
+                                            <label class="form-check-label" for="option2-2">Neutral</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="options2" id="option2-2"
+                                                value="option2">
+                                            <label class="form-check-label" for="option2-2">Modestly Curious</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="options2" id="option2-2"
+                                                value="option2">
+                                            <label class="form-check-label" for="option2-2">Developing Interest</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="options2" id="option2-2"
+                                                value="option2">
+                                            <label class="form-check-label" for="option2-2">Profoundly Interested</label>
                                         </div>
                                         <!-- Add more options as needed -->
                                     </div>
