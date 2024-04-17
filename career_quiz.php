@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <?php
 session_start(); // Start the session to access $_SESSION['user']
 require 'vendor/autoload.php';
@@ -21,9 +22,7 @@ if ($userData) {
     $gender = $userData['gender'];
     $place = $userData['place'];
     $educationLevel = $userData['education_level'];
-    // No need to populate password field as it's sensitive information
 
-    // Now, echo the HTML form with the populated values
     ?>
 
     <head>
@@ -106,6 +105,11 @@ if ($userData) {
                                         <input class="form-check-input ml-1" type="radio" name="highSchoolCourse"
                                             id="commerce" value="commerce">
                                         <label class="form-check-label h6 ml-4" for="commerce">Commerce</label>
+                                    </div>
+                                    <div class="form-check bg-white rounded p-3 mt-2">
+                                        <input class="form-check-input ml-1" type="radio" name="highSchoolCourse"
+                                            id="humanities" value="humanities">
+                                        <label class="form-check-label h6 ml-4" for="humanities">Humanities</label>
                                     </div>
                                 </div>
                                 <div class="question-container mt-5" id="scienceOrEngineering" style="display: none;">
@@ -289,7 +293,7 @@ NY 535022, USA<br><br>
                 ["Chemistry", "To what extent are you eager to understand matter and its properties?", ["Uninterested", "Slightly Interested", "Exploring the Topic", "Moderately Engaged", "Quite Keen", "Proficient in the Subject", "Highly Driven to Learn More"]],
                 ["Biology", "How enthusiastic are you to deepen your understanding of living organisms?", ["Uninterested", "Basic Familiarity", "Exploring the Field", "Moderately Interested", "Very Curious", "Advanced Knowledge", "Expert-Level Interest"]],
                 ["Mathematics", "How motivated are you to develop your skills in numerical concepts?", ["Not Really Interested", "Beginner-Level Interest", "Exploring the Subject", "Moderately Engaged", "Quite Keen", "Advanced Skills", "Masterful Expertise"]],
-                ["Environmental Science", "How eager are you to expand your knowledge of ecological systems?", ["Uninterested", "Basic Understanding", "Exploring the Topic", "Moderately Confident", "Very Curious", "Proficient in the Subject", "Expert-Level Passion"]],
+                ["Environmental_Science", "How eager are you to expand your knowledge of ecological systems?", ["Uninterested", "Basic Understanding", "Exploring the Topic", "Moderately Confident", "Very Curious", "Proficient in the Subject", "Expert-Level Passion"]],
                 ["Astronomy", "To what extent are you driven to understand celestial bodies?", ["No Special Interest", "Basic Familiarity", "Exploring the Field", "Moderately Interested", "Very Curious", "Advanced Knowledge", "Expert-Level Enthusiasm"]],
                 ["Medicine", "How motivated are you to learn about health and wellness?", ["Uninterested", "Basic Understanding", "Exploring the Subject", "Moderately Engaged", "Very Curious", "Advanced Knowledge", "Expert-Level Passion"]],
                 ["Pharmacology", "How eager are you to deepen your familiarity with drugs and their effects?", ["Uninterested", "Limited Interest", "Exploring the Topic", "Moderately Familiar", "Very Curious", "Proficient in the Subject", "Expert-Level Enthusiasm"]],
@@ -298,16 +302,16 @@ NY 535022, USA<br><br>
 
 
             Engineering = [
-                ["Mechanical Engineering", "How interested are you in designing and building objects?", ["No Particular Interest", "Limited Interest", "Exploring the Subject", "Moderately Engaged", "Quite Engaged", "Developing Skills", "Highly Skilled Interest"]],
-                ["Electrical Engineering", "How eager are you to work with gadgets and technology?", ["No Special Interest", "Limited Understanding", "Exploring the Topic", "Moderately Confident", "Quite Interested", "Developing Skills", "Expert-Level Enthusiasm"]],
-                ["Civil Engineering", "How motivated are you to plan and construct buildings or bridges?", ["Not My Main Focus", "Basic Interest", "Starting to Explore", "Moderately Engaged", "Very Curious", "Progressing Skills", "Highly Competent Interest"]],
-                ["Chemical Engineering", "How eager are you to learn about mixing and transforming different materials?", ["Not My Area", "Basic Understanding", "Exploring the Subject", "Moderately Familiar", "Quite Inquisitive", "Developing Skills", "Highly Knowledgeable Interest"]],
-                ["Computer Engineering", "How interested are you in developing your understanding of computers and software?", ["Not Fully Engaged", "Limited Interest", "Exploring the Topic", "Moderately Engaged", "Very Curious", "Progressing Skills", "Highly Proficient Interest"]],
-                ["Aerospace Engineering", "To what extent are you driven to learn about aerospace systems and technology?", ["No Special Interest", "Limited Understanding", "Exploring the Field", "Moderately Engaged", "Quite Intrigued", "Advancing Skills", "Expert-Level Enthusiasm"]],
-                ["Biomedical Engineering", "How eager are you to learn about medical equipment and procedures?", ["Not Particularly Interested", "Basic Knowledge", "Exploring the Subject", "Moderately Engaged", "Very Curious", "Improving Skills", "Very Knowledgeable Interest"]],
-                ["Environmental Engineering", "How motivated are you to learn about environmental systems and sustainability?", ["Not My Strength", "Limited Understanding", "Exploring the Topic", "Moderately Engaged", "Quite Interested", "Advancing Skills", "Highly Skilled Interest"]],
-                ["Industrial Engineering", "How eager are you to learn about improving production processes?", ["Not Fully Engaged", "Basic Interest", "Starting to Explore", "Moderately Engaged", "Quite Intrigued", "Progressing Skills", "Highly Competent Interest"]],
-                ["Software Engineering", "How confident are you in developing your skills in computer programming?", ["Not My Focus", "Basic Interest", "Exploring the Subject", "Moderately Engaged", "Very Curious", "Advancing Skills", "Highly Skilled Interest"]]
+                ["Mechanical_Engineering", "How interested are you in designing and building objects?", ["No Particular Interest", "Limited Interest", "Exploring the Subject", "Moderately Engaged", "Quite Engaged", "Developing Skills", "Highly Skilled Interest"]],
+                ["Electrical_Engineering", "How eager are you to work with gadgets and technology?", ["No Special Interest", "Limited Understanding", "Exploring the Topic", "Moderately Confident", "Quite Interested", "Developing Skills", "Expert-Level Enthusiasm"]],
+                ["Civil_Engineering", "How motivated are you to plan and construct buildings or bridges?", ["Not My Main Focus", "Basic Interest", "Starting to Explore", "Moderately Engaged", "Very Curious", "Progressing Skills", "Highly Competent Interest"]],
+                ["Chemical_Engineering", "How eager are you to learn about mixing and transforming different materials?", ["Not My Area", "Basic Understanding", "Exploring the Subject", "Moderately Familiar", "Quite Inquisitive", "Developing Skills", "Highly Knowledgeable Interest"]],
+                ["Computer_Engineering", "How interested are you in developing your understanding of computers and software?", ["Not Fully Engaged", "Limited Interest", "Exploring the Topic", "Moderately Engaged", "Very Curious", "Progressing Skills", "Highly Proficient Interest"]],
+                ["Aerospace_Engineering", "To what extent are you driven to learn about aerospace systems and technology?", ["No Special Interest", "Limited Understanding", "Exploring the Field", "Moderately Engaged", "Quite Intrigued", "Advancing Skills", "Expert-Level Enthusiasm"]],
+                ["Biomedical_Engineering", "How eager are you to learn about medical equipment and procedures?", ["Not Particularly Interested", "Basic Knowledge", "Exploring the Subject", "Moderately Engaged", "Very Curious", "Improving Skills", "Very Knowledgeable Interest"]],
+                ["Environmental_Engineering", "How motivated are you to learn about environmental systems and sustainability?", ["Not My Strength", "Limited Understanding", "Exploring the Topic", "Moderately Engaged", "Quite Interested", "Advancing Skills", "Highly Skilled Interest"]],
+                ["Industrial_Engineering", "How eager are you to learn about improving production processes?", ["Not Fully Engaged", "Basic Interest", "Starting to Explore", "Moderately Engaged", "Quite Intrigued", "Progressing Skills", "Highly Competent Interest"]],
+                ["Software_Engineering", "How confident are you in developing your skills in computer programming?", ["Not My Focus", "Basic Interest", "Exploring the Subject", "Moderately Engaged", "Very Curious", "Advancing Skills", "Highly Skilled Interest"]]
             ];
 
 
@@ -315,22 +319,35 @@ NY 535022, USA<br><br>
                 ["Accounting", "How comfortable are you with the idea of managing financial records?", ["No Interest", "Limited Interest", "Just Starting to Explore", "Moderately Engaged", "Very Curious", "Improving Skills", "Very Proficient Interest"]],
                 ["Finance", "How eager are you to deepen your understanding of financial markets?", ["Not Really", "Basic Understanding", "Exploring the Topic", "Moderately Okay", "Quite Interested", "Developing Skills", "Very Confident Interest"]],
                 ["Economics", "To what extent are you driven to learn about economic principles?", ["Not Really My Thing", "Basic Interest", "Starting to Explore", "Moderately Engaged", "Very Curious", "Improving Skills", "Very Knowledgeable Interest"]],
-                ["Business Management", "How interested are you in developing your ability to oversee business operations?", ["Not Really", "Basic Interest", "Just Starting Out", "Moderately Okay", "Quite Interested", "Developing Skills", "Highly Skilled Interest"]],
+                ["Business_Management", "How interested are you in developing your ability to oversee business operations?", ["Not Really", "Basic Interest", "Just Starting Out", "Moderately Okay", "Quite Interested", "Developing Skills", "Highly Skilled Interest"]],
                 ["Marketing", "How eager are you to learn about promoting products and services?", ["Not Really", "Basic Understanding", "Exploring the Topic", "Moderately Okay", "Quite Interested", "Developing Skills", "Very Familiar Interest"]],
-                ["Human Resource Management", "To what extent are you driven to learn about managing personnel?", ["Not Really", "Basic Understanding", "Exploring the Subject", "Moderately Okay", "Very Curious", "Developing Skills", "Very Knowledgeable Interest"]],
-                ["Supply Chain Management", "How interested are you in learning about managing product distribution?", ["Not Really", "Basic Interest", "Just Starting Out", "Moderately Okay", "Quite Interested", "Improving Skills", "Highly Skilled Interest"]],
-                ["International Business", "How eager are you to navigate global markets?", ["Not Really", "Basic Understanding", "Exploring the Topic", "Moderately Okay", "Quite Interested", "Advancing Skills", "Very Confident Interest"]],
+                ["Human_Resource_Management", "To what extent are you driven to learn about managing personnel?", ["Not Really", "Basic Understanding", "Exploring the Subject", "Moderately Okay", "Very Curious", "Developing Skills", "Very Knowledgeable Interest"]],
+                ["Supply_Chain_Management", "How interested are you in learning about managing product distribution?", ["Not Really", "Basic Interest", "Just Starting Out", "Moderately Okay", "Quite Interested", "Improving Skills", "Highly Skilled Interest"]],
+                ["International_Business", "How eager are you to navigate global markets?", ["Not Really", "Basic Understanding", "Exploring the Topic", "Moderately Okay", "Quite Interested", "Advancing Skills", "Very Confident Interest"]],
                 ["Entrepreneurship", "To what extent are you prepared to start and run your own business?", ["Not Really", "Basic Interest", "Just Starting Out", "Moderately Okay", "Very Curious", "Developing Skills", "Highly Prepared Interest"]],
-                ["Corporate Law", "How interested are you in learning about legal matters in business?", ["Not Really", "Basic Interest", "Exploring the Subject", "Moderately Okay", "Quite Interested", "Developing Skills", "Very Knowledgeable Interest"]],
-                ["Organizational Behavior", "To what extent are you driven to understand human behavior in organizations?", ["Not Really", "Basic Understanding", "Exploring the Topic", "Moderately Okay", "Very Curious", "Improving Skills", "Very Insightful Interest"]],
-                ["Risk Management", "How eager are you to learn about identifying and mitigating risks in business?", ["Not Really", "Basic Understanding", "Exploring the Subject", "Moderately Okay", "Quite Interested", "Advancing Skills", "Very Familiar Interest"]],
-                ["Business Analytics", "How interested are you in developing your ability to analyze and interpret business data?", ["Not Really", "Basic Interest", "Just Starting Out", "Moderately Okay", "Very Curious", "Improving Skills", "Very Skilled Interest"]],
-                ["Financial Planning", "To what extent are you interested in managing personal or business finances?", ["No Interest", "Limited Interest", "Just Starting to Explore", "Moderately Engaged", "Very Curious", "Improving Skills", "Very Proficient Interest"]]
+                ["Corporate_Law", "How interested are you in learning about legal matters in business?", ["Not Really", "Basic Interest", "Exploring the Subject", "Moderately Okay", "Quite Interested", "Developing Skills", "Very Knowledgeable Interest"]],
+                ["Organizational_Behavior", "To what extent are you driven to understand human behavior in organizations?", ["Not Really", "Basic Understanding", "Exploring the Topic", "Moderately Okay", "Very Curious", "Improving Skills", "Very Insightful Interest"]],
+                ["Risk_Management", "How eager are you to learn about identifying and mitigating risks in business?", ["Not Really", "Basic Understanding", "Exploring the Subject", "Moderately Okay", "Quite Interested", "Advancing Skills", "Very Familiar Interest"]],
+                ["Business_Analytics", "How interested are you in developing your ability to analyze and interpret business data?", ["Not Really", "Basic Interest", "Just Starting Out", "Moderately Okay", "Very Curious", "Improving Skills", "Very Skilled Interest"]],
+                ["Financial_Planning", "To what extent are you interested in managing personal or business finances?", ["No Interest", "Limited Interest", "Just Starting to Explore", "Moderately Engaged", "Very Curious", "Improving Skills", "Very Proficient Interest"]]
             ];
+            Humanities = [
+                ["History", "How interested are you in studying past events and their significance?", ["No Special Interest", "Limited Interest", "Curious to Explore", "Moderately Engaged", "Quite Interested", "Developing Knowledge", "Deeply Intrigued"]],
+                ["Literature", "To what extent are you drawn to exploring written works and their meanings?", ["No Special Interest", "Limited Interest", "Curious to Explore", "Moderately Engaged", "Quite Interested", "Developing Understanding", "Deeply Enthralled"]],
+                ["Philosophy", "How eager are you to delve into fundamental questions about existence and knowledge?", ["No Special Interest", "Limited Interest", "Curious to Explore", "Moderately Engaged", "Quite Interested", "Developing Insight", "Deeply Philosophical"]],
+                ["Art_History", "To what extent are you fascinated by the study of artistic movements and masterpieces?", ["No Special Interest", "Limited Interest", "Curious to Explore", "Moderately Engaged", "Quite Interested", "Developing Knowledge", "Deeply Captivated"]],
+                ["Cultural_Studies", "How motivated are you to analyze and understand various cultural phenomena?", ["No Special Interest", "Limited Interest", "Curious to Explore", "Moderately Engaged", "Quite Interested", "Developing Understanding", "Deeply Investigative"]],
+                ["Religious_Studies", "How interested are you in exploring different religious beliefs and practices?", ["No Special Interest", "Limited Interest", "Curious to Explore", "Moderately Engaged", "Quite Interested", "Developing Knowledge", "Deeply Intrigued"]],
+                ["Linguistics", "To what extent are you fascinated by the study of language and its structures?", ["No Special Interest", "Limited Interest", "Curious to Explore", "Moderately Engaged", "Quite Interested", "Developing Understanding", "Deeply Analytical"]],
+                ["Archaeology", "How eager are you to uncover and interpret past human cultures through material remains?", ["No Special Interest", "Limited Interest", "Curious to Explore", "Moderately Engaged", "Quite Interested", "Developing Knowledge", "Deeply Investigative"]],
+                ["Anthropology", "To what extent are you driven to understand human societies and cultures?", ["No Special Interest", "Limited Interest", "Curious to Explore", "Moderately Engaged", "Quite Interested", "Developing Understanding", "Deeply Intrigued"]],
+                ["Performing_Arts", "How interested are you in participating or studying theatrical or musical performances?", ["No Special Interest", "Limited Interest", "Curious to Explore", "Moderately Engaged", "Quite Interested", "Developing Skills", "Deeply Enthralled"]]
+            ]
 
             Science = shuffleScience(Science);
             Engineering = shuffleScience(Engineering);
             Commerce = shuffleScience(Commerce);
+            Humanities = shuffleScience(Humanities);
 
 
             let userResponses = {};
@@ -355,7 +372,7 @@ NY 535022, USA<br><br>
                     radioInput.type = "radio";
                     radioInput.id = `${questionName.replace(/\s+/g, '')}${i + 1}`;
                     radioInput.name = questionName.replace(/\s+/g, '');
-                    radioInput.value = `option${i + 1}`;
+                    radioInput.value = i + 1;
                     radioInput.className = "form-check-input ml-1";
 
                     const label = document.createElement("label");
@@ -365,10 +382,10 @@ NY 535022, USA<br><br>
 
                     radioInput.addEventListener("change", () => {
                         if (radioInput.checked) {
-                            userResponses[questionName] = options[i];
+                            userResponses[questionName] = radioInput.value;
                         }
                     });
-                    if (userResponses[questionName] === options[i]) {
+                    if (userResponses[questionName] === radioInput.value) {
                         radioInput.checked = true;
                     }
                     const formCheck = document.createElement("div");
@@ -422,8 +439,17 @@ NY 535022, USA<br><br>
                     if (radio.value === "science") {
                         document.getElementById("scienceOrEngineering").style.display = "block";
                         document.getElementById("question2").style.display = "none";
-                    } else {
+                    } else if(radio.value === "commerce") {
                         questions = Commerce;
+                        currentQuestion = 0;
+                        showQuestion(currentQuestion);
+                        nextBtn.disabled = false;
+                        prevBtn.disabled = true;
+                        submitBtn.style.display = "none";
+                        document.getElementById("scienceOrEngineering").style.display = "none";
+                        document.getElementById("question2").style.display = "none";
+                    }else{
+                        questions = Humanities;
                         currentQuestion = 0;
                         showQuestion(currentQuestion);
                         nextBtn.disabled = false;

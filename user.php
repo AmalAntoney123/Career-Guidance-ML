@@ -21,9 +21,7 @@ if ($userData) {
     $gender = $userData['gender'];
     $place = $userData['place'];
     $educationLevel = $userData['education_level'];
-    // No need to populate password field as it's sensitive information
 
-    // Now, echo the HTML form with the populated values
     ?>
 
     <head>
@@ -68,7 +66,7 @@ if ($userData) {
             <div class="container">
                 <div class="row">
                     <div class="col-md-10">
-                        <h3>Career Vertex</h3>
+                        <a href="."><h3>Career Vertex</h3></a>
                     </div>
                     <div class="col-md-2 text-right">
                         <div class="dropdown">
@@ -157,10 +155,10 @@ if ($userData) {
                                                 <input type="password" class="form-control" id="password"
                                                     placeholder="********" disabled>
                                             </div> -->
-                                            <button type="button" class="btn btn-primary updateBtn" onclick="enableForm()"
+                                            <button type="button" class="btn btn-warning updateBtn" onclick="enableForm()"
                                                 id="updateBtn">Update
                                                 Profile</button>
-                                            <button type="button" class="btn btn-primary saveBtn" style="display:none"
+                                            <button type="button" class="btn btn-warning saveBtn" style="display:none"
                                                 onclick="disableForm()" id="saveBtn">
                                                 Save</button>
                                         </form>

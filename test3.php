@@ -21,9 +21,7 @@ if ($userData) {
     $gender = $userData['gender'];
     $place = $userData['place'];
     $educationLevel = $userData['education_level'];
-    // No need to populate password field as it's sensitive information
 
-    // Now, echo the HTML form with the populated values
     ?>
 
     <head>
