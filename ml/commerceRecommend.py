@@ -38,7 +38,7 @@ def train_model(X_train, y_train, model_filename):
 def evaluate_model(model, X_test, y_test):
     y_pred = model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
-    print(f'<br><br>Model Accuracy: {accuracy:.2f}')
+    # print(f'<br><br>Model Accuracy: {accuracy:.2f}')
     return accuracy
 
 def predict_profession(model, user_answers):
@@ -54,18 +54,18 @@ def main():
 
     if os.path.exists(model_filename):
         model = joblib.load(model_filename)
-        print("Loaded model from file.")
+        # print("Loaded model from file.")
     else:
         model = train_model(X_train, y_train, model_filename)
-        print("Trained a new model and saved it to file.")
+        # print("Trained a new model and saved it to file.")
 
     accuracy = evaluate_model(model, X_test, y_test)
-    print (accuracy)
+    # print (accuracy)
     user_answers = sys.argv[1]
     user_answers = [float(x) for x in user_answers.split(',')]
     # user_answers = [7, 6, 1, 7, 1, 4, 3, 6,1,2,5,7,1,3]
     predicted_profession = predict_profession(model, user_answers)
-    print(f'<br><br>Predicted Profession: {predicted_profession}')
+    print(predicted_profession)
 
 if __name__ == "__main__":
     main()
