@@ -63,7 +63,7 @@ def main():
     print (accuracy)
     user_answers = sys.argv[1]
     user_answers = [float(x) for x in user_answers.split(',')]
-    # user_answers = [7, 6, 1, 7, 1, 4, 3, 6,1]
+    # user_answers = [7, 6, 1, 7, 1, 4, 3, 6,1,5]
     predicted_profession = predict_profession(model, user_answers)
     print(f'<br><br>Predicted Profession: {predicted_profession}')
 
