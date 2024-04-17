@@ -3,7 +3,7 @@
 
 <?php
 
-session_start(); // Start the session to access $_SESSION['user']
+session_start(); 
 require 'vendor/autoload.php';
 
 // Connect to MongoDB
@@ -25,7 +25,9 @@ if ($userData) {
     $educationLevel = $userData['education_level'];
 
     ?>
-<?php if(!isset($_POST['career'])){ header('Location:career_quiz.php');} ?>
+    <?php if (!isset($_POST['career'])) {
+        header('Location:career_quiz.php');
+    } ?>
 
     <head>
         <meta charset="utf-8">
@@ -204,32 +206,32 @@ NY 535022, USA<br><br>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
         <script>
             career = {
-                "Physics": ["Physicist", "Optical Engineer", "Materials Scientist"],
-                "Chemistry": ["Chemist", "Pharmaceutical Scientist", "Environmental Scientist"],
-                "Biology": ["Biologist", "Medical Researcher", "Environmental Consultant"],
-                "Mathematics": ["Mathematician", "Data Analyst", "Financial Analyst"],
-                "Environmental_Science": ["Environmental Engineer", "Sustainability Coordinator", "Natural Resource Manager"],
-                "Astronomy": ["Astronomer", "Satellite Engineer", "Science Communicator"],
-                "Medicine": ["Physician", "Pharmacist", "Biomedical Engineer"],
-                "Pharmacology": ["Pharmacologist", "Clinical Research Coordinator", "Pharmaceutical Sales Representative"],
-                "Biochemistry": ["Biochemist", "Biotechnology Researcher", "Food Scientist"],
+                "Physics": ["Physicist", "Optical Engineer", "Professor"],
+                "Chemistry": ["Chemist", "Pharmaceutical Scientist", "Agrochemical Specialist"],
+                "Biology": ["Biologist", "Medical Researcher", "Biotechnology Scientist"],
+                "Mathematics": ["Mathematician", "Data Analyst", "Actuarial Analyst"],
+                "Environmental_Science": ["Environmental Engineer", "Sustainability Consultant", "Forest Officer"],
+                "Astronomy": ["Astronomer", "Satellite Engineer", "Planetarium Educator"],
+                "Medicine": ["Physician", "Pharmacist", "Medical Devices Sales"],
+                "Pharmacology": ["Pharmacologist", "Clinical Research Associate", "Medical Representative"],
+                "Biochemistry": ["Biochemist", "Quality Control Analyst", "Food Technologist"],
 
-                "Mechanical Engineering": ["Mechanical Engineer", "Product Designer", "Robotics Engineer"],
-                "Electrical Engineering": ["Electrical Engineer", "Computer Hardware Engineer", "Renewable Energy Specialist"],
-                "Civil Engineering": ["Civil Engineer", "Urban Planner", "Construction Manager"],
-                "Chemical Engineering": ["Chemical Engineer", "Process Engineer", "Environmental Engineer"],
-                "Computer Engineering": ["Computer Hardware Engineer", "Software Developer", "Network Administrator"],
-                "Aerospace Engineering": ["Aerospace Engineer", "Satellite Technician", "Aviation Maintenance Technician"],
-                "Biomedical Engineering": ["Biomedical Engineer", "Medical Device Designer", "Prosthetics Specialist"],
-                "Environmental Engineering": ["Environmental Engineer", "Sustainability Consultant", "Renewable Energy Engineer"],
-                "Industrial Engineering": ["Industrial Engineer", "Production Manager", "Logistics Coordinator"],
-                "Software Engineering": ["Software Engineer", "Mobile App Developer", "Cybersecurity Specialist"],
+                "Mechanical Engineering": ["Mechanical Engineer", "HVAC Specialist", "Automotive Engineer"],
+                "Electrical Engineering": ["Electrical Engineer", "Power Systems Engineer", "Telecom Engineer"],
+                "Civil Engineering": ["Civil Engineer", "Construction Manager", "Urban Planner"],
+                "Chemical Engineering": ["Chemical Engineer", "Petroleum Refinery Engineer", "Plastic Processing Engineer"],
+                "Computer Engineering": ["Software Developer", "Network Administrator", "IT Support Technician"],
+                "Aerospace Engineering": ["Aerospace Engineer", "Aircraft Maintenance Engineer", "Satellite Ground Segment Engineer"],
+                "Biomedical Engineering": ["Biomedical Engineer", "Medical Equipment Sales", "Prosthetics Technician"],
+                "Environmental Engineering": ["Environmental Engineer", "Waste Management Consultant", "Renewable Energy Engineer"],
+                "Industrial Engineering": ["Industrial Engineer", "Production Manager", "Logistics Manager"],
+                "Software Engineering": ["Software Engineer", "Mobile App Developer", "Cybersecurity Analyst"],
 
-                "Accounting": ["Chartered Accountant", "Financial Analyst", "Auditor"],
-                "Finance": ["Financial Advisor", "Investment Banker", "Financial Analyst"],
-                "Economics": ["Economist", "Policy Analyst", "Market Researcher"],
-                "Business Management": ["Business Manager", "Entrepreneur", "Operations Manager"],
-                "Marketing": ["Marketing Manager", "Brand Manager", "Digital Marketing Specialist"],
+                "Accounting": ["Chartered Accountant", "Tax Consultant", "Audit Associate"],
+                "Finance": ["Financial Advisor", "Investment Banker", "Mutual Fund Distributor"],
+                "Economics": ["Economist", "Policy Analyst", "Market Research Analyst"],
+                "Business Management": ["General Manager", "Entrepreneur", "Operations Manager"],
+                "Marketing": ["Marketing Manager", "Brand Manager", "Digital Marketing Executive"],
                 "Human Resource Management": ["HR Manager", "Talent Acquisition Specialist", "Training and Development Coordinator"],
                 "Supply Chain Management": ["Supply Chain Manager", "Logistics Coordinator", "Procurement Analyst"],
                 "International Business": ["International Business Consultant", "Export-Import Manager", "Global Marketing Specialist"],
@@ -241,16 +243,16 @@ NY 535022, USA<br><br>
                 "Financial Planning": ["Financial Planner", "Wealth Manager", "Investment Advisor"],
 
                 "History": ["Historian", "Museum Curator", "Archivist"],
-                "Literature": ["Writer", "Editor", "Copywriter"],
-                "Philosophy": ["Philosopher", "Ethics Consultant", "Policy Analyst"],
-                "Art_History": ["Art Historian", "Curator", "Art Conservator"],
+                "Literature": ["Author", "Editor", "Copywriter"],
+                "Philosophy": ["Philosophy Professor", "Ethics Consultant", "Policy Analyst"],
+                "Art_History": ["Art Historian", "Museum Curator", "Art Conservator"],
                 "Cultural_Studies": ["Cultural Anthropologist", "Diversity and Inclusion Specialist", "Intercultural Trainer"],
-                "Religious_Studies": ["Religious Scholar", "Chaplain", "Interfaith Coordinator"],
+                "Religious_Studies": ["Religious Scholar", "Chaplain", "Religious Educator"],
                 "Linguistics": ["Linguist", "Language Translator", "Speech Therapist"],
                 "Archaeology": ["Archaeologist", "Heritage Conservationist", "Museum Educator"],
                 "Anthropology": ["Anthropologist", "Social Researcher", "Cultural Advisor"],
                 "Performing_Arts": ["Performing Artist", "Drama Therapist", "Arts Administrator"]
-            };
+            }
             const predictedProfession = "<?= $_POST['career'] ?>"; // Replace with the actual predicted profession
             const subjectElement = document.getElementById('subject');
             const careerButtonsElement = document.getElementById('career-buttons');
@@ -261,12 +263,35 @@ NY 535022, USA<br><br>
             // Generate the career buttons
             const careers = career[predictedProfession];
             careers.forEach(career => {
-                const button = document.createElement('a');
+                const button = document.createElement('button');
                 button.classList.add('btn', 'btn-warning', 'btn-lg', 'm-1', 'career-button');
                 button.textContent = career;
-                button.href = '#';
+                button.type = 'button';
+                button.addEventListener('click', () => {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = 'save_career.php';
+
+                    const careerInput = document.createElement('input');
+                    careerInput.type = 'hidden';
+                    careerInput.name = 'career';
+                    careerInput.value = career;
+
+                    const userInput = document.createElement('input');
+                    userInput.type = 'hidden';
+                    userInput.name = 'user_id';
+                    userInput.value = '<?= $_SESSION["user"] ?>';
+
+                    form.appendChild(careerInput);
+                    form.appendChild(userInput);
+
+                    document.body.appendChild(form);
+                    form.submit();
+                });
                 careerButtonsElement.appendChild(button);
             });
+
+
         </script>
     </body>
 

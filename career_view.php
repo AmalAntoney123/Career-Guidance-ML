@@ -22,6 +22,17 @@ if ($userData) {
     $place = $userData['place'];
     $educationLevel = $userData['education_level'];
 
+    $careerCollection = $careerDb->career;
+    $userCareer = $careerCollection->findOne(['user_id' => $_SESSION['user']]);
+
+    if (isset($_POST['reset_career'])) {
+        // Delete the user's career entry from the collection
+        $careerCollection->deleteOne(['user_id' => $_SESSION['user']]);
+
+        // Redirect the user to the career_quiz.php page
+        header("Location: career_view.php");
+        exit;
+    }
     ?>
 
     <head>
@@ -56,59 +67,6 @@ if ($userData) {
         <link href="assets/css/main.css" rel="stylesheet">
         <!-- jQuery -->
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
-
-        <script>
-            // Function to update user profile data via AJAX
-            function updateUserProfile(field, value) {
-                $.ajax({
-                    url: 'update_profile.php',
-                    type: 'POST',
-                    data: { field: field, value: value },
-                    success: function (response) {
-                        // Show toast notification
-                        showToast('Value updated successfully!');
-                    }
-                });
-            }
-
-            // Function to show toast notification
-            function showToast(message) {
-                // Implement toast notification display here (using Bootstrap Toast or any other library)
-                // For example, using Bootstrap 5 Toast component:
-                var toastEl = document.getElementById('toast');
-                var bsToast = new bootstrap.Toast(toastEl);
-                toastEl.querySelector('.toast-body').textContent = message;
-                bsToast.show();
-            }
-
-            // Event listener for input field blur
-            $('input').blur(function () {
-                var fieldName = $(this).attr('name');
-                var fieldValue = $(this).val();
-                // Call updateUserProfile function when the input field loses focus
-                updateUserProfile(fieldName, fieldValue);
-
-            });
-            function enableForm() {
-                var form = document.getElementById('profileForm');
-                var inputs = form.getElementsByTagName('input');
-                for (var i = 0; i < inputs.length; i++) {
-                    inputs[i].disabled = false;
-                }
-                $('.updateBtn').hide();
-                $('.saveBtn').show();
-            }
-            function disableForm() {
-                var form = document.getElementById('profileForm');
-                var inputs = form.getElementsByTagName('input');
-                for (var i = 0; i < inputs.length; i++) {
-                    inputs[i].disabled = true;
-                }
-                $('.updateBtn').show();
-                $('.saveBtn').hide();
-            }
-        </script>
 
     </head>
 
@@ -156,9 +114,23 @@ if ($userData) {
                         <div class="h-100 d-flex justify-content-center align-items-center">
                             <div class="card rounded bg-light" style="height:500px;width:100%">
                                 <div class="card-body">
-                                    <div class="text-center" style="margin:20%">
-                                        <a href="career_quiz.php" class="btn btn-warning btn-lg">Find Your Career</a>
-                                    </div>
+                                    <?php if ($userCareer) { ?>
+                                        <div class="text-center" style="margin:20%">
+                                            <h3>Your Career Path:</h3>
+                                            <p><?= $userCareer['career'] ?></p>
+                                        </div>
+                                        <div class="d-flex justify-content-end">
+                                            <form method="post" action="">
+                                                <input type="hidden" name="reset_career" value="1">
+                                                <button type="submit" class="btn btn-danger btn-lg">Reset Career</button>
+                                            </form>
+                                        </div>
+
+                                    <?php } else { ?>
+                                        <div class="text-center" style="margin:20%">
+                                            <a href="career_quiz.php" class="btn btn-warning btn-lg">Find Your Career</a>
+                                        </div>
+                                    <?php } ?>
                                 </div>
                             </div>
                         </div>

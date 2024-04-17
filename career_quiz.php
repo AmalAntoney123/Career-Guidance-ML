@@ -180,8 +180,8 @@ if ($userData) {
             <div class="container my-3">
                 <div class="d-flex justify-content-between">
                     <button type="button" id="prevBtn" class="btn btn-secondary btn-lg" disabled>Previous</button>
-                    <a type="button" id="resetBtn" class="btn btn-warning btn-lg" href="career_quiz.php">Reset</a>
-                    <button type="button" id="nextBtn" class="btn btn-danger btn-lg">Next</button>
+                    <a type="button" id="resetBtn" class="btn btn-danger btn-lg" href="career_quiz.php">Reset</a>
+                    <button type="button" id="nextBtn" class="btn btn-warning btn-lg">Next</button>
                     <button type="submit" id="submitBtn" class="btn btn-success btn-lg"
                         style="display: none;">Submit</button>
                 </div>
@@ -259,6 +259,27 @@ NY 535022, USA<br><br>
                 class="bi bi-arrow-up-short"></i></a>
 
         <div id="preloader"></div>
+
+        <!-- modal -->
+        <div class="modal fade" id="validationModal" tabindex="-1" aria-labelledby="validationModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="validationModalLabel">Please Select an Option</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        You must select an option before proceeding to the next question.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Vendor JS Files -->
         <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -353,6 +374,7 @@ NY 535022, USA<br><br>
             let userResponses = {};
             let currentQuestion = 0;
             let questions = [];
+            let hasSelectedOption = false;
 
             function showQuestion(questionIndex) {
                 const questionDiv = document.createElement("div");
@@ -383,6 +405,7 @@ NY 535022, USA<br><br>
                     radioInput.addEventListener("change", () => {
                         if (radioInput.checked) {
                             userResponses[questionName] = radioInput.value;
+                            hasSelectedOption = true;
                         }
                     });
                     if (userResponses[questionName] === radioInput.value) {
@@ -419,18 +442,25 @@ NY 535022, USA<br><br>
                 if (currentQuestion === 0) {
                     prevBtn.disabled = true;
                 }
+                window.scrollTo({ top: 100, behavior: 'smooth' });
             });
 
             nextBtn.addEventListener("click", () => {
-                currentQuestion++;
-                if (currentQuestion < questions.length) {
-                    showQuestion(currentQuestion);
+                if (hasSelectedOption) {
+                    currentQuestion++;
+                    if (currentQuestion < questions.length) {
+                        showQuestion(currentQuestion);
+                    } else {
+                        nextBtn.disabled = true;
+                        submitBtn.style.display = "block";
+                        nextBtn.style.display = "none";
+                    }
+                    prevBtn.disabled = false;
+                    hasSelectedOption = false; // Reset the flag
+                    window.scrollTo({ top: 130, behavior: 'smooth' });
                 } else {
-                    nextBtn.disabled = true;
-                    submitBtn.style.display = "block";
-                    nextBtn.style.display = "none";
+                    $('#validationModal').modal('show');
                 }
-                prevBtn.disabled = false;
             });
 
             const highSchoolCourseRadios = document.getElementsByName("highSchoolCourse");
@@ -439,7 +469,7 @@ NY 535022, USA<br><br>
                     if (radio.value === "science") {
                         document.getElementById("scienceOrEngineering").style.display = "block";
                         document.getElementById("question2").style.display = "none";
-                    } else if(radio.value === "commerce") {
+                    } else if (radio.value === "commerce") {
                         questions = Commerce;
                         currentQuestion = 0;
                         showQuestion(currentQuestion);
@@ -448,7 +478,7 @@ NY 535022, USA<br><br>
                         submitBtn.style.display = "none";
                         document.getElementById("scienceOrEngineering").style.display = "none";
                         document.getElementById("question2").style.display = "none";
-                    }else{
+                    } else {
                         questions = Humanities;
                         currentQuestion = 0;
                         showQuestion(currentQuestion);
