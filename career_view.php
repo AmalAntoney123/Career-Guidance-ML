@@ -67,7 +67,12 @@ if ($userData) {
         <link href="assets/css/main.css" rel="stylesheet">
         <!-- jQuery -->
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
+        <style type="text/css">
+            .course-item:hover {
+                background-color: #e0e0e0;
+                cursor: pointer;
+            }
+        </style>
     </head>
 
     <body>
@@ -110,31 +115,138 @@ if ($userData) {
                             <a href="#" class="list-group-item list-group-item-action active">Career Path</a>
                         </div>
                     </div>
-                    <div class="col-md-9 mt-3">
-                        <div class="h-100 d-flex justify-content-center align-items-center">
-                            <div class="card rounded bg-light" style="height:500px;width:100%">
-                                <div class="card-body">
-                                    <?php if ($userCareer) { ?>
-                                        <div class="text-center" style="margin:20%">
-                                            <h3>Your Career Path:</h3>
-                                            <p><?= $userCareer['career'] ?></p>
-                                        </div>
-                                        <div class="d-flex justify-content-end">
-                                            <form method="post" action="">
-                                                <input type="hidden" name="reset_career" value="1">
-                                                <button type="submit" class="btn btn-danger btn-lg">Reset Career</button>
-                                            </form>
-                                        </div>
+                    <?php
+                    if ($userData && $userCareer) {
+                        $careerPath = $userCareer['career'];
+                        $coursePathData = $careerDb->coursePath->findOne(['careerPath' => $careerPath]);
 
-                                    <?php } else { ?>
-                                        <div class="text-center" style="margin:20%">
-                                            <a href="career_quiz.php" class="btn btn-warning btn-lg">Find Your Career</a>
+                        if ($coursePathData) {
+                            $ugDegree = $coursePathData['data']['UGDegree'];
+                            $pgDegree = $coursePathData['data']['PGDegree'];
+                            $certifications = $coursePathData['data']['Certifications'];
+                            $universities = $coursePathData['data']['Universities'];
+                            ?>
+
+                            <div class="col-md-9 mt-3">
+                                <div class="h-100 d-flex justify-content-center align-items-center">
+                                    <div class="card rounded bg-light">
+                                        <div class="card-body">
+                                            <div class="container my-5">
+                                                <h3><?= $userCareer['career'] ?> Career Path</h3>
+                                                <div class="row mt-3">
+                                                    <div class="col-md-12">
+                                                        <div class="card mb-3">
+                                                            <div class="card-body course-item">
+                                                                <i class="fas fa-graduation-cap"></i> <?= $ugDegree ?>
+                                                            </div>
+                                                            <div class="card-footer text-center">
+                                                                <i class="fas fa-arrow-down"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card mb-3">
+                                                            <div class="card-body course-item">
+                                                                <i class="fas fa-graduation-cap"></i> <?= $pgDegree ?>
+                                                            </div>
+                                                            <div class="card-footer text-center">
+                                                                <i class="fas fa-arrow-down"></i>
+                                                            </div>
+                                                        </div>
+
+                                                        <?php
+                                                        $certificationCount = count($certifications);
+                                                        foreach ($certifications as $key => $certification) {
+                                                            ?>
+                                                            <div class="card mb-3">
+                                                                <div class="card-body course-item">
+                                                                    <i class="fas fa-certificate"></i> <?= $certification ?>
+                                                                </div>
+                                                                <?php if ($key < $certificationCount - 1) { ?>
+                                                                    <div class="card-footer text-center">
+                                                                        <i class="fas fa-arrow-down"></i>
+                                                                    </div>
+                                                                <?php } ?>
+                                                            </div>
+                                                            <?php
+                                                        }
+                                                        ?>
+
+                                                    </div>
+                                                    <div class="col-md-12"><hr>
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <h5 class="card-title"><i class="fas fa-university mr-2"></i>
+                                                                    Ideal Universities</h5>
+                                                                <ul class="list-group list-group-flush">
+                                                                    <?php foreach ($universities as $university) { ?>
+                                                                        <li class="list-group-item"><?= $university ?></li>
+                                                                    <?php } ?>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex justify-content-end mt-3">
+                                                            <button type="button" class="btn btn-danger btn-lg"
+                                                                data-bs-toggle="modal" data-bs-target="#resetCareerModal">
+                                                                Reset Career
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <?php
+                        } else {
+                            // Handle case where user's career path data does not exist in the coursePath collection
+                            ?>
+
+                            <div class="col-md-9 mt-3">
+                                <div class="h-100 d-flex justify-content-center align-items-center">
+                                    <div class="card rounded bg-light">
+                                        <div class="card-body">
+                                            <div class="container my-5">
+                                                <div class="row">
+                                                    <div class="col-md-12 text-center">
+                                                        <h4>Oops! Your career path data is not available.</h4>
+                                                        <a href="career_quiz.php" class="btn btn-primary btn-lg">Find Your
+                                                            Career</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <?php
+                        }
+                    } else {
+                        // Handle case where user's career data does not exist
+                        ?>
+
+                        <div class="col-md-9 mt-3">
+                            <div class="h-100 d-flex justify-content-center align-items-center">
+                                <div class="card rounded bg-light">
+                                    <div class="card-body">
+                                        <div class="container my-5">
+                                            <div class="row">
+                                                <div class="col-md-12 text-center">
+                                                    <h4>Oops! You haven't defined your career path yet.</h4>
+                                                    <a href="career_quiz.php" class="btn btn-warning btn-lg">Find Your
+                                                        Career</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+
+                        <?php
+                    }
+                    ?>
                 </div>
             </div>
 
@@ -210,7 +322,29 @@ if ($userData) {
                 class="bi bi-arrow-up-short"></i></a>
 
         <div id="preloader"></div>
-
+        <!-- modal -->
+        <!-- Reset Career Modal -->
+        <div class="modal fade" id="resetCareerModal" tabindex="-1" aria-labelledby="resetCareerModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="resetCareerModalLabel">Reset Career</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to reset your career path? This action cannot be undone.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <form action="career_view.php" method="post">
+                            <input type="hidden" name="reset_career" value="true">
+                            <button type="submit" class="btn btn-danger">Reset Career</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Vendor JS Files -->
         <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
         <script src="assets/vendor/aos/aos.js"></script>
@@ -223,7 +357,6 @@ if ($userData) {
         <script src="assets/js/main.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 
     </body>
 
