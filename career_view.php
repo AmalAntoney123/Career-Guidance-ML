@@ -82,7 +82,7 @@ if ($userData) {
             <div class="container">
                 <div class="row">
                     <div class="col-md-10">
-                        <h3>Career Vertex</h3>
+                        <a href="."><h3>Career Vertex</h3></a>
                     </div>
                     <div class="col-md-2 text-right">
                         <div class="dropdown">
@@ -203,7 +203,7 @@ if ($userData) {
                             ?>
 
                             <div class="col-md-9 mt-3">
-                                <div class="h-100 d-flex justify-content-center align-items-center">
+                                <div class="h-100 w-100 d-flex justify-content-center align-items-center">
                                     <div class="card rounded bg-light">
                                         <div class="card-body">
                                             <div class="container my-5">
@@ -227,7 +227,7 @@ if ($userData) {
                         ?>
 
                         <div class="col-md-9 mt-3">
-                            <div class="h-100 d-flex justify-content-center align-items-center">
+                            <div class="h-100 w-100 d-flex justify-content-center align-items-center" style="width:100%">
                                 <div class="card rounded bg-light">
                                     <div class="card-body">
                                         <div class="container my-5">

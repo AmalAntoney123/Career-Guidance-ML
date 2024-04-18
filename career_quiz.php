@@ -446,6 +446,13 @@ NY 535022, USA<br><br>
             });
 
             nextBtn.addEventListener("click", () => {
+                let hasSelectedOption = false;
+                const selectedRadios = document.querySelectorAll(`input[name="${questions[currentQuestion][0].replace(/\s+/g, '')}"]:checked`);
+                if (selectedRadios.length > 0) {
+                    hasSelectedOption = true;
+                    userResponses[questions[currentQuestion][0]] = selectedRadios[0].value;
+                }
+
                 if (hasSelectedOption) {
                     currentQuestion++;
                     if (currentQuestion < questions.length) {
@@ -456,7 +463,6 @@ NY 535022, USA<br><br>
                         nextBtn.style.display = "none";
                     }
                     prevBtn.disabled = false;
-                    hasSelectedOption = false; // Reset the flag
                     window.scrollTo({ top: 130, behavior: 'smooth' });
                 } else {
                     $('#validationModal').modal('show');
