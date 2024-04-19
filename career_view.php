@@ -14,7 +14,6 @@ $userData = $userCollection->findOne(['_id' => $_SESSION['user']]);
 
 // Check if user data is found
 if ($userData) {
-    // Extract user information from $userData
     $fullName = $userData['full_name'];
     $email = $userData['email'];
     $age = $userData['age'];
@@ -67,12 +66,99 @@ if ($userData) {
         <link href="assets/css/main.css" rel="stylesheet">
         <!-- jQuery -->
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-        <style type="text/css">
-            .course-item:hover {
-                background-color: #e0e0e0;
-                cursor: pointer;
+
+
+        <style>
+            .circle {
+                font-weight: bold;
+                padding: 15px 20px;
+                border-radius: 50%;
+                background-color: #feb900;
+                color: #4D4545;
+                max-height: 50px;
+                z-index: 2;
+            }
+
+            .how-it-works.row {
+                display: flex;
+            }
+
+            .how-it-works.row .col-2 {
+                display: inline-flex;
+                align-self: stretch;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .how-it-works.row .col-2::after {
+                content: "";
+                position: absolute;
+                border-left: 3px solid #feb900;
+                z-index: 1;
+            }
+
+            .how-it-works.row .col-2.bottom::after {
+                height: 50%;
+                left: 50%;
+                top: 50%;
+            }
+
+            .how-it-works.row .col-2.full::after {
+                height: 100%;
+                left: calc(50% - 3px);
+            }
+
+            .how-it-works.row .col-2.top::after {
+                height: 50%;
+                left: 50%;
+                top: 0;
+            }
+
+            .timeline div {
+                padding: 0;
+                height: 40px;
+            }
+
+            .timeline hr {
+                border-top: 3px solid #feb900;
+                margin: 0;
+                top: 17px;
+                position: relative;
+            }
+
+            .timeline .col-2 {
+                display: flex;
+                overflow: hidden;
+            }
+
+            .timeline .corner {
+                border: 3px solid #feb900;
+                width: 100%;
+                position: relative;
+                border-radius: 15px;
+            }
+
+            .timeline .top-right {
+                left: 50%;
+                top: -50%;
+            }
+
+            .timeline .left-bottom {
+                left: -50%;
+                top: calc(50% - 3px);
+            }
+
+            .timeline .top-left {
+                left: -50%;
+                top: -50%;
+            }
+
+            .timeline .right-bottom {
+                left: 50%;
+                top: calc(50% - 3px);
             }
         </style>
+
     </head>
 
     <body>
@@ -82,7 +168,9 @@ if ($userData) {
             <div class="container">
                 <div class="row">
                     <div class="col-md-10">
-                        <a href="."><h3>Career Vertex</h3></a>
+                        <a href=".">
+                            <h3>Career Vertex</h3>
+                        </a>
                     </div>
                     <div class="col-md-2 text-right">
                         <div class="dropdown">
@@ -105,8 +193,6 @@ if ($userData) {
         </header>
 
         <main id="main">
-
-
             <div class="container my-4">
                 <div class="row">
                     <div class="col-md-3 mt-3">
@@ -124,84 +210,115 @@ if ($userData) {
                             $ugDegree = $coursePathData['data']['UGDegree'];
                             $pgDegree = $coursePathData['data']['PGDegree'];
                             $certifications = $coursePathData['data']['Certifications'];
-                            $universities = $coursePathData['data']['Universities'];
+                            $universities = $coursePathData['data']['Universities']->getArrayCopy();
                             ?>
-
                             <div class="col-md-9 mt-3">
-                                <div class="h-100 d-flex justify-content-center align-items-center">
-                                    <div class="card rounded bg-light">
-                                        <div class="card-body">
-                                            <div class="container my-5">
-                                                <h3><?= $userCareer['career'] ?> Career Path</h3>
-                                                <div class="row mt-3">
-                                                    <div class="col-md-12">
-                                                        <div class="card mb-3">
-                                                            <div class="card-body course-item">
-                                                                <i class="fas fa-graduation-cap"></i> <?= $ugDegree ?>
-                                                            </div>
-                                                            <div class="card-footer text-center">
-                                                                <i class="fas fa-arrow-down"></i>
-                                                            </div>
-                                                        </div>
-                                                        <div class="card mb-3">
-                                                            <div class="card-body course-item">
-                                                                <i class="fas fa-graduation-cap"></i> <?= $pgDegree ?>
-                                                            </div>
-                                                            <div class="card-footer text-center">
-                                                                <i class="fas fa-arrow-down"></i>
-                                                            </div>
-                                                        </div>
+                                <div class="card h-100 d-flex justify-content-center align-items-center bg-light p-5">
+                                    <div class="container-fluid blue-bg">
+                                        <div class="container">
+                                            <h2 class="pb-3 pt-2"><?= $userCareer['career'] ?> Career Path</h2><hr>
 
+                                            <!--first section-->
+                                            <div class="row align-items-center how-it-works">
+                                                <div class="col-2 text-center bottom">
+                                                    <div class="circle">1</div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <h5><?= $ugDegree ?></h5>
+                                                    <ul>
                                                         <?php
-                                                        $certificationCount = count($certifications);
-                                                        foreach ($certifications as $key => $certification) {
+                                                        $universityCount = count($universities);
+                                                        $maxUniversities = 2; // Maximum universities to display in the first step
+                                                        $displayedUniversities = 0;
+                                                        foreach ($universities as $university) {
+                                                            if ($displayedUniversities < $maxUniversities) {
+                                                                ?>
+                                                                <li><?= $university ?></li>
+                                                                <?php
+                                                                $displayedUniversities++;
+                                                            } else {
+                                                                break;
+                                                            }
+                                                        }
+                                                        ?>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                            <!--path between 1-2-->
+                                            <div class="row timeline">
+                                                <div class="col-2">
+                                                    <div class="corner top-right"></div>
+                                                </div>
+                                                <div class="col-8">
+                                                    <hr />
+                                                </div>
+                                                <div class="col-2">
+                                                    <div class="corner left-bottom"></div>
+                                                </div>
+                                            </div>
+
+                                            <!--second section-->
+                                            <div class="row align-items-center justify-content-end how-it-works">
+                                                <div class="col-6 text-right">
+                                                    <h5><?= $pgDegree ?></h5>
+                                                    <ul>
+                                                        <?php
+                                                        $remainingUniversities = array_slice($universities, $maxUniversities);
+                                                        foreach ($remainingUniversities as $university) {
                                                             ?>
-                                                            <div class="card mb-3">
-                                                                <div class="card-body course-item">
-                                                                    <i class="fas fa-certificate"></i> <?= $certification ?>
-                                                                </div>
-                                                                <?php if ($key < $certificationCount - 1) { ?>
-                                                                    <div class="card-footer text-center">
-                                                                        <i class="fas fa-arrow-down"></i>
-                                                                    </div>
-                                                                <?php } ?>
-                                                            </div>
+                                                            <li><?= $university ?></li>
                                                             <?php
                                                         }
                                                         ?>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-2 text-center full">
+                                                    <div class="circle">2</div>
+                                                </div>
+                                            </div>
 
-                                                    </div>
-                                                    <div class="col-md-12"><hr>
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <h5 class="card-title"><i class="fas fa-university mr-2"></i>
-                                                                    Ideal Universities</h5>
-                                                                <ul class="list-group list-group-flush">
-                                                                    <?php foreach ($universities as $university) { ?>
-                                                                        <li class="list-group-item"><?= $university ?></li>
-                                                                    <?php } ?>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex justify-content-end mt-3">
-                                                            <button type="button" class="btn btn-danger btn-lg"
-                                                                data-bs-toggle="modal" data-bs-target="#resetCareerModal">
-                                                                Reset Career
-                                                            </button>
-                                                        </div>
-                                                    </div>
+                                            <!--path between 2-3-->
+                                            <div class="row timeline">
+                                                <div class="col-2">
+                                                    <div class="corner right-bottom"></div>
+                                                </div>
+                                                <div class="col-8">
+                                                    <hr />
+                                                </div>
+                                                <div class="col-2">
+                                                    <div class="corner top-left"></div>
+                                                </div>
+                                            </div>
+
+                                            <!--third section-->
+                                            <div class="row align-items-center how-it-works">
+                                                <div class="col-2 text-center top">
+                                                    <div class="circle">3</div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <h5>Certifications</h5>
+                                                    <ul>
+                                                        <?php foreach ($certifications as $certification) { ?>
+                                                            <li><?= $certification ?></li>
+                                                        <?php } ?>
+                                                    </ul>
+                                                </div><hr>
+                                                <div class="d-flex justify-content-end mt-3">
+                                                    <button type="button" class="btn btn-danger btn-lg" data-bs-toggle="modal"
+                                                        data-bs-target="#resetCareerModal">
+                                                        Reset Career
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                             <?php
                         } else {
                             // Handle case where user's career path data does not exist in the coursePath collection
                             ?>
-
                             <div class="col-md-9 mt-3">
                                 <div class="h-100 w-100 d-flex justify-content-center align-items-center">
                                     <div class="card rounded bg-light">
@@ -219,13 +336,11 @@ if ($userData) {
                                     </div>
                                 </div>
                             </div>
-
                             <?php
                         }
                     } else {
                         // Handle case where user's career data does not exist
                         ?>
-
                         <div class="col-md-9 mt-3">
                             <div class="h-100 w-100 d-flex justify-content-center align-items-center" style="width:100%">
                                 <div class="card rounded bg-light">
@@ -243,14 +358,12 @@ if ($userData) {
                                 </div>
                             </div>
                         </div>
-
                         <?php
                     }
                     ?>
                 </div>
             </div>
-
-        </main><!-- End #main -->
+        </main>
 
         <!-- ======= Footer ======= -->
         <footer id="footer" class="footer">
@@ -263,11 +376,11 @@ if ($userData) {
                             <div class="footer-info">
                                 <h3>Career-Vertex</h3>
                                 <!--<p>
-                A108 Adam Street <br>
-                NY 535022, USA<br><br>
-                <strong>Phone:</strong> +1 5589 55488 55<br>
-                <strong>Email:</strong> info@example.com<br>
-              </p>-->
+        A108 Adam Street <br>
+        NY 535022, USA<br><br>
+        <strong>Phone:</strong> +1 5589 55488 55<br>
+        <strong>Email:</strong> info@example.com<br>
+      </p>-->
                                 <div class="social-links d-flex mt-3">
                                     <a href="#" class="d-flex align-items-center justify-content-center"><i
                                             class="bi bi-twitter"></i></a>
@@ -322,8 +435,7 @@ if ($userData) {
                 class="bi bi-arrow-up-short"></i></a>
 
         <div id="preloader"></div>
-        <!-- modal -->
-        <!-- Reset Career Modal -->
+        <!-- reset modal -->
         <div class="modal fade" id="resetCareerModal" tabindex="-1" aria-labelledby="resetCareerModalLabel"
             aria-hidden="true">
             <div class="modal-dialog">
@@ -345,6 +457,7 @@ if ($userData) {
                 </div>
             </div>
         </div>
+
         <!-- Vendor JS Files -->
         <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
         <script src="assets/vendor/aos/aos.js"></script>
@@ -358,7 +471,34 @@ if ($userData) {
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+
+        <script>
+            let currentQuestionIndex = 1;
+
+            document.getElementById('prevBtn').addEventListener('click', function () {
+                if (currentQuestionIndex > 1) {
+                    document.getElementById(`question${currentQuestionIndex}`).classList.remove('active');
+                    currentQuestionIndex--;
+                    document.getElementById(`question${currentQuestionIndex}`).classList.add('active');
+                }
+            });
+
+            document.getElementById('nextBtn').addEventListener('click', function () {
+                if (currentQuestionIndex < 2) { // Adjust this number based on the total number of questions
+                    document.getElementById(`question${currentQuestionIndex}`).classList.remove('active');
+                    currentQuestionIndex++;
+                    document.getElementById(`question${currentQuestionIndex}`).classList.add('active');
+                }
+            });
+
+        </script>
     </body>
+
 
     </html>
 

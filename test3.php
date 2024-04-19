@@ -22,6 +22,17 @@ if ($userData) {
     $place = $userData['place'];
     $educationLevel = $userData['education_level'];
 
+    $careerCollection = $careerDb->career;
+    $userCareer = $careerCollection->findOne(['user_id' => $_SESSION['user']]);
+
+    if (isset($_POST['reset_career'])) {
+        // Delete the user's career entry from the collection
+        $careerCollection->deleteOne(['user_id' => $_SESSION['user']]);
+
+        // Redirect the user to the career_quiz.php page
+        header("Location: career_view.php");
+        exit;
+    }
     ?>
 
     <head>
@@ -56,58 +67,12 @@ if ($userData) {
         <link href="assets/css/main.css" rel="stylesheet">
         <!-- jQuery -->
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
-
-        <style>
-            .question-container-main {
-                position: relative;
-            }
-
-            .question-container {
-                position: absolute;
-                top: 0;
-                width: 100%;
-                opacity: 0;
-                transform: translateX(-20px);
-                transition: opacity 0.4s, transform 1.0s;
-            }
-
-            .question-container.active {
-                opacity: 1;
-                transform: translateX(0);
-            }
-
-            .question-nav {
-                position: absolute;
-                display: flex;
-                top: 320px;
-                justify-content: space-between;
-            }
-
-            /* Center the card and make it more rounded */
-            .card {
-                border-radius: 20px;
-            }
-
-            /* Increase the text size */
-            .card-title,
-            .card-text {
-                font-size: 1.2em;
-                /* Adjust the font size as needed */
-            }
-
-            /* Give a background color to the body */
-            body.bg-light {
-                background-color: #f8f9fa;
-                /* Light grey background */
-            }
-
-            /* Center the navigation buttons */
-            .question-nav {
-                justify-content: center;
+        <style type="text/css">
+            .course-item:hover {
+                background-color: #e0e0e0;
+                cursor: pointer;
             }
         </style>
-
     </head>
 
     <body>
@@ -117,7 +82,7 @@ if ($userData) {
             <div class="container">
                 <div class="row">
                     <div class="col-md-10">
-                        <h3>Career Vertex</h3>
+                        <a href="."><h3>Career Vertex</h3></a>
                     </div>
                     <div class="col-md-2 text-right">
                         <div class="dropdown">
@@ -139,95 +104,151 @@ if ($userData) {
             </div>
         </header>
 
-        <main id="main" style="height:500px;">
+        <main id="main">
 
-            <div class="container mt-5">
-                <div class="row justify-content-center">
-                    <div class="col-md-6">
-                        <form id="questionForm" method="post">
-                            <div class="question-container-main">
-                                <!-- Question 1 -->
-                                <div class="card mb-3 question-container bg-light active" id="question1">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Hi <?=ucwords($fullName)?></h5>
-                                        <p class="card-text">What course did u pursue in highschool?</p>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="options1" id="option2-1"
-                                                value="commerce">
-                                            <label class="form-check-label" for="option2-1">Commerce</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="options1" id="option2-2"
-                                                value="science">
-                                            <label class="form-check-label" for="option2-2">Science</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="options1" id="option2-2"
-                                                value="maths">
-                                            <label class="form-check-label" for="option2-2">Maths</label>
-                                        </div>
 
-                                        <!-- Add more options as needed -->
-                                    </div>
-                                </div>
-                                <!-- Question 2 -->
-                                <div class="card mb-3 question-container bg-light" id="question2">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Hi <?=ucwords($fullName)?></h5>
-                                        <p class="card-text">How much do you enjoy delving into the basics of managing digital information?</p>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="options2" id="option2-1"
-                                                value="option1">
-                                            <label class="form-check-label" for="option2-1">Not Interested</label>
+            <div class="container my-4">
+                <div class="row">
+                    <div class="col-md-3 mt-3">
+                        <div class="list-group">
+                            <a href="user.php" class="list-group-item list-group-item-action">Profile</a>
+                            <a href="#" class="list-group-item list-group-item-action active">Career Path</a>
+                        </div>
+                    </div>
+                    <?php
+                    if ($userData && $userCareer) {
+                        $careerPath = $userCareer['career'];
+                        $coursePathData = $careerDb->coursePath->findOne(['careerPath' => $careerPath]);
+
+                        if ($coursePathData) {
+                            $ugDegree = $coursePathData['data']['UGDegree'];
+                            $pgDegree = $coursePathData['data']['PGDegree'];
+                            $certifications = $coursePathData['data']['Certifications'];
+                            $universities = $coursePathData['data']['Universities'];
+                            ?>
+
+                            <div class="col-md-9 mt-3">
+                                <div class="h-100 d-flex justify-content-center align-items-center">
+                                    <div class="card rounded bg-light">
+                                        <div class="card-body">
+                                            <div class="container my-5">
+                                                <h3><?= $userCareer['career'] ?> Career Path</h3>
+                                                <div class="row mt-3">
+                                                    <div class="col-md-12">
+                                                        <div class="card mb-3">
+                                                            <div class="card-body course-item">
+                                                                <i class="fas fa-graduation-cap"></i> <?= $ugDegree ?>
+                                                            </div>
+                                                            <div class="card-footer text-center">
+                                                                <i class="fas fa-arrow-down"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card mb-3">
+                                                            <div class="card-body course-item">
+                                                                <i class="fas fa-graduation-cap"></i> <?= $pgDegree ?>
+                                                            </div>
+                                                            <div class="card-footer text-center">
+                                                                <i class="fas fa-arrow-down"></i>
+                                                            </div>
+                                                        </div>
+
+                                                        <?php
+                                                        $certificationCount = count($certifications);
+                                                        foreach ($certifications as $key => $certification) {
+                                                            ?>
+                                                            <div class="card mb-3">
+                                                                <div class="card-body course-item">
+                                                                    <i class="fas fa-certificate"></i> <?= $certification ?>
+                                                                </div>
+                                                                <?php if ($key < $certificationCount - 1) { ?>
+                                                                    <div class="card-footer text-center">
+                                                                        <i class="fas fa-arrow-down"></i>
+                                                                    </div>
+                                                                <?php } ?>
+                                                            </div>
+                                                            <?php
+                                                        }
+                                                        ?>
+
+                                                    </div>
+                                                    <div class="col-md-12"><hr>
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <h5 class="card-title"><i class="fas fa-university mr-2"></i>
+                                                                    Ideal Universities</h5>
+                                                                <ul class="list-group list-group-flush">
+                                                                    <?php foreach ($universities as $university) { ?>
+                                                                        <li class="list-group-item"><?= $university ?></li>
+                                                                    <?php } ?>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex justify-content-end mt-3">
+                                                            <button type="button" class="btn btn-danger btn-lg"
+                                                                data-bs-toggle="modal" data-bs-target="#resetCareerModal">
+                                                                Reset Career
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="options2" id="option2-2"
-                                                value="option2">
-                                            <label class="form-check-label" for="option2-2">Poor</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="options2" id="option2-2"
-                                                value="option2">
-                                            <label class="form-check-label" for="option2-2">Beginner</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="options2" id="option2-2"
-                                                value="option2">
-                                            <label class="form-check-label" for="option2-2">Neutral</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="options2" id="option2-2"
-                                                value="option2">
-                                            <label class="form-check-label" for="option2-2">Modestly Curious</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="options2" id="option2-2"
-                                                value="option2">
-                                            <label class="form-check-label" for="option2-2">Developing Interest</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="options2" id="option2-2"
-                                                value="option2">
-                                            <label class="form-check-label" for="option2-2">Profoundly Interested</label>
-                                        </div>
-                                        <!-- Add more options as needed -->
-                                    </div>
-                                </div>
-                                <div>
-                                    <!-- Add more questions as needed -->
-                                    <div class="d-flex justify-content-between mt-3 question-nav">
-                                        <button class="btn btn-secondary" type="button" id="prevBtn">Previous</button>&nbsp;
-                                        <button class="btn btn-warning" type="button" id="nextBtn">Next</button>
                                     </div>
                                 </div>
                             </div>
 
-                        </form>
+                            <?php
+                        } else {
+                            // Handle case where user's career path data does not exist in the coursePath collection
+                            ?>
 
-                    </div>
+                            <div class="col-md-9 mt-3">
+                                <div class="h-100 w-100 d-flex justify-content-center align-items-center">
+                                    <div class="card rounded bg-light">
+                                        <div class="card-body">
+                                            <div class="container my-5">
+                                                <div class="row">
+                                                    <div class="col-md-12 text-center">
+                                                        <h4>Oops! Your career path data is not available.</h4>
+                                                        <a href="career_quiz.php" class="btn btn-primary btn-lg">Find Your
+                                                            Career</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <?php
+                        }
+                    } else {
+                        // Handle case where user's career data does not exist
+                        ?>
+
+                        <div class="col-md-9 mt-3">
+                            <div class="h-100 w-100 d-flex justify-content-center align-items-center" style="width:100%">
+                                <div class="card rounded bg-light">
+                                    <div class="card-body">
+                                        <div class="container my-5">
+                                            <div class="row">
+                                                <div class="col-md-12 text-center">
+                                                    <h4>Oops! You haven't defined your career path yet.</h4>
+                                                    <a href="career_quiz.php" class="btn btn-warning btn-lg">Find Your
+                                                        Career</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <?php
+                    }
+                    ?>
                 </div>
             </div>
-
 
         </main><!-- End #main -->
 
@@ -242,11 +263,11 @@ if ($userData) {
                             <div class="footer-info">
                                 <h3>Career-Vertex</h3>
                                 <!--<p>
-        A108 Adam Street <br>
-        NY 535022, USA<br><br>
-        <strong>Phone:</strong> +1 5589 55488 55<br>
-        <strong>Email:</strong> info@example.com<br>
-      </p>-->
+                A108 Adam Street <br>
+                NY 535022, USA<br><br>
+                <strong>Phone:</strong> +1 5589 55488 55<br>
+                <strong>Email:</strong> info@example.com<br>
+              </p>-->
                                 <div class="social-links d-flex mt-3">
                                     <a href="#" class="d-flex align-items-center justify-content-center"><i
                                             class="bi bi-twitter"></i></a>
@@ -301,7 +322,29 @@ if ($userData) {
                 class="bi bi-arrow-up-short"></i></a>
 
         <div id="preloader"></div>
-
+        <!-- modal -->
+        <!-- Reset Career Modal -->
+        <div class="modal fade" id="resetCareerModal" tabindex="-1" aria-labelledby="resetCareerModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="resetCareerModalLabel">Reset Career</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to reset your career path? This action cannot be undone.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <form action="career_view.php" method="post">
+                            <input type="hidden" name="reset_career" value="true">
+                            <button type="submit" class="btn btn-danger">Reset Career</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Vendor JS Files -->
         <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
         <script src="assets/vendor/aos/aos.js"></script>
@@ -315,34 +358,7 @@ if ($userData) {
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-        <!-- Optional JavaScript -->
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
-
-        <script>
-            let currentQuestionIndex = 1;
-
-            document.getElementById('prevBtn').addEventListener('click', function () {
-                if (currentQuestionIndex > 1) {
-                    document.getElementById(`question${currentQuestionIndex}`).classList.remove('active');
-                    currentQuestionIndex--;
-                    document.getElementById(`question${currentQuestionIndex}`).classList.add('active');
-                }
-            });
-
-            document.getElementById('nextBtn').addEventListener('click', function () {
-                if (currentQuestionIndex < 2) { // Adjust this number based on the total number of questions
-                    document.getElementById(`question${currentQuestionIndex}`).classList.remove('active');
-                    currentQuestionIndex++;
-                    document.getElementById(`question${currentQuestionIndex}`).classList.add('active');
-                }
-            });
-
-        </script>
     </body>
-
 
     </html>
 

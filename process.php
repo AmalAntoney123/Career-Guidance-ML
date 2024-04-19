@@ -36,16 +36,68 @@ if ($userData) {
 
         $command = escapeshellcmd('python ml/scienceRecommend.py ' . escapeshellarg($arrayString));
         $predictedProfession = shell_exec($command);
-        echo $predictedProfession;
+        // echo $predictedProfession;
         $predictedProfession = trim($predictedProfession);
+        echo '<!DOCTYPE html>
+                <html lang="en">
+                <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Loading Animation</title>
+                <link rel="stylesheet" href="styles.css">
+                </head>
+                <body>
+                <div class="loader"></div>
+                </body>
+                </html>
+                <style>
+                body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+                }
 
-        echo '<form id="career-form" method="post" action="career_result.php">';
-        echo '<input type="hidden" name="career" value="' . $predictedProfession . '">';
-        echo '</form>';
+                .loader {
+                /* Loader styles */
+                display: inline-grid;
+                }
 
-        echo '<script>
-    document.getElementById("career-form").submit();
-</script>';
+                .loader:before,
+                .loader:after {
+                /* Loader animation styles */
+                content: "";
+                grid-area: 1/1;
+                height: 30px;
+                aspect-ratio: 6;
+                --c: #0000 64%,#000 66% 98%,#0000 101%;
+                background:
+                    radial-gradient(35% 146% at 50% 159%,var(--c)) 0 0,
+                    radial-gradient(35% 146% at 50% -59%,var(--c)) 25% 100%;
+                background-size: calc(100%/3) 50%;
+                background-repeat: repeat-x;
+                clip-path: inset(0 100% 0 0);
+                animation: l10 1.5s infinite linear;
+                }
+
+                .loader:after {
+                scale: -1;
+                }
+
+                @keyframes l10{
+                50% {clip-path: inset(0)}
+                to {clip-path: inset(0 0 0 100%)}
+                }
+
+                </style>';
+                        echo '<form id="career-form" method="post" action="career_result.php">';
+                        echo '<input type="hidden" name="career" value="' . $predictedProfession . '">';
+                        echo '</form>';
+
+                        echo '<script>
+                    document.getElementById("career-form").submit();
+                </script>';
     } elseif (isset($_GET['Software_Engineering'], $_GET['Mechanical_Engineering'], $_GET['Chemical_Engineering'], $_GET['Civil_Engineering'], $_GET['Aerospace_Engineering'], $_GET['Biomedical_Engineering'], $_GET['Industrial_Engineering'], $_GET['Electrical_Engineering'], $_GET['Computer_Engineering'], $_GET['Environmental_Engineering'])) {
         $softwareEngineering = $_GET['Software_Engineering'];
         $mechanicalEngineering = $_GET['Mechanical_Engineering'];
@@ -127,7 +179,7 @@ if ($userData) {
         echo '<form id="career-form" method="post" action="career_result.php">';
         echo '<input type="hidden" name="career" value="' . $predictedProfession . '">';
         echo '</form>';
-        
+
         echo '<script>
             document.getElementById("career-form").submit();
         </script>';
