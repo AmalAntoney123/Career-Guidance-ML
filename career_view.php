@@ -309,7 +309,27 @@ if ($userData) {
                                                     </ul>
                                                 </div>
                                                 <hr>
-                                                <div class="d-flex justify-content-end mt-3">
+                                                <div class="d-flex justify-content-between mt-3 ">
+                                                    <div class="feedback">
+                                                    <?php
+
+                                                    $feedbackCollection = $careerDb->feedback;
+                                                    // Check if the user has already given feedback
+                                                    $userFeedback = $feedbackCollection->findOne(['user_id' => $_SESSION['user']]);
+
+                                                    if ($userFeedback) {
+                                                        // User has already given feedback, show the thank you message
+                                                        echo '<p>Thank you for your feedback!</p>';
+                                                    } else {
+                                                        // User has not given feedback yet, show the "Leave Feedback" button
+                                                        ?>
+                                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                                            data-bs-target="#feedbackModal">
+                                                            Leave Feedback
+                                                        </button>
+                                                        <?php
+                                                    }
+                                                    ?></div>
                                                     <button type="button" class="btn btn-danger btn-lg" data-bs-toggle="modal"
                                                         data-bs-target="#resetCareerModal">
                                                         Reset Career
@@ -463,6 +483,105 @@ if ($userData) {
             </div>
         </div>
 
+        <!-- Feedback Modal -->
+        <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="feedbackModalLabel">Leave Feedback</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="rating">
+                            <span class="star" data-value="1"><i class="fas fa-star"></i></span>
+                            <span class="star" data-value="2"><i class="fas fa-star"></i></span>
+                            <span class="star" data-value="3"><i class="fas fa-star"></i></span>
+                            <span class="star" data-value="4"><i class="fas fa-star"></i></span>
+                            <span class="star" data-value="5"><i class="fas fa-star"></i></span>
+                        </div>
+                        <textarea id="feedbackText" class="form-control mt-3" rows="3"
+                            placeholder="Write your feedback here..."></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="submitFeedback">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <style>
+            .rating {
+                unicode-bidi: bidi-override;
+                direction: ltr;
+                font-size: 2rem;
+            }
+
+            .rating>span {
+                display: inline-block;
+                position: relative;
+                width: 1.1em;
+                cursor: pointer;
+                color: #ddd;
+            }
+
+            .rating>span:hover {
+                color: gold;
+            }
+
+            .selected {
+                color: gold !important;
+            }
+        </style>
+        <script>
+            $(document).ready(function () {
+
+                // Add click event listener to stars
+                $('.rating .star').click(function () {
+                    $('.rating .star').removeClass('selected');
+                    $(this).addClass('selected');
+                    $(this).prevAll('.star').addClass('selected');
+                    $(this).nextAll('.star').removeClass('selected');
+                });
+
+                $('.rating .star').hover(function () {
+                    $('.rating .star').removeClass('selected');
+                    $(this).addClass('selected');
+                    $(this).prevAll('.star').addClass('selected');
+                    $(this).nextAll('.star').removeClass('selected');
+                });
+
+                $('#submitFeedback').click(function () {
+                    var feedback = $('#feedbackText').val();
+                    var value= $('.rating .star.selected').length;
+                    if (value && feedback) {
+                        $.ajax({
+                            type: 'POST',
+                            url: 'submit_feedback.php',
+                            data: {
+                                rating: value,
+                                feedback: feedback
+                            },
+                            success: function (response) {
+                                // Handle the server response
+                                // Reset the form or show a success message
+                                $('#feedbackModal').modal('hide');
+                                $('#feedbackText').val('');
+                                $('.rating .star').removeClass('selected');
+                                $('.feedback').html('<p>Thank you for your feedback!</p>');
+                            },
+                            error: function (xhr, status, error) {
+                                // Handle the error
+                                console.error(error);
+                            }
+                        });
+                    } else {
+                        // Show an error message if rating or feedback is missing
+                        alert('Please provide a rating and feedback.');
+                    }
+                });
+
+            });
+        </script>
         <!-- Vendor JS Files -->
         <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
         <script src="assets/vendor/aos/aos.js"></script>
@@ -478,30 +597,10 @@ if ($userData) {
 
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script> -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 
-        <script>
-            let currentQuestionIndex = 1;
-
-            document.getElementById('prevBtn').addEventListener('click', function () {
-                if (currentQuestionIndex > 1) {
-                    document.getElementById(`question${currentQuestionIndex}`).classList.remove('active');
-                    currentQuestionIndex--;
-                    document.getElementById(`question${currentQuestionIndex}`).classList.add('active');
-                }
-            });
-
-            document.getElementById('nextBtn').addEventListener('click', function () {
-                if (currentQuestionIndex < 2) { // Adjust this number based on the total number of questions
-                    document.getElementById(`question${currentQuestionIndex}`).classList.remove('active');
-                    currentQuestionIndex++;
-                    document.getElementById(`question${currentQuestionIndex}`).classList.add('active');
-                }
-            });
-
-        </script>
     </body>
 
 

@@ -31,6 +31,13 @@ if ($userData) {
         'full_name' => ['$ne' => 'admin']
     ]);
 
+
+
+    // Select the collections
+    $feedbackCollection = $careerDb->feedback;
+
+    // Get all feedback data
+    $feedbackCursor = $feedbackCollection->find();
     ?>
 
     <head>
@@ -65,6 +72,14 @@ if ($userData) {
         <link href="assets/css/main.css" rel="stylesheet">
         <!-- jQuery -->
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <style>
+            button.active {
+                background-color: #feb900 !important;
+            }
+            button.active:hover {
+                background-color: #eeb900 !important;
+            }
+        </style>
 
     </head>
 
@@ -104,43 +119,111 @@ if ($userData) {
 
         <main class="container">
             <div class="card m-4 p-4 bg-light">
-                <h1 class="mb-4">User Management</h1>
-                <table class="table table-striped rounded-3 overflow-hidden table-bordered ">
-                    <thead>
-                        <tr>
-                            <th>Full Name</th>
-                            <th>Email</th>
-                            <th>Age</th>
-                            <th>Gender</th>
-                            <th>Place</th>
-                            <th>Education Level</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($users as $user): ?>
-                            <tr>
-                                <td><?php echo $user['full_name']; ?></td>
-                                <td><?php echo $user['email']; ?></td>
-                                <td><?php echo $user['age']; ?></td>
-                                <td><?php echo $user['gender']; ?></td>
-                                <td><?php echo $user['place']; ?></td>
-                                <td><?php echo $user['education_level']; ?></td>
-                                <td id="status-<?php echo $user['_id']; ?>">
-                                    <?php echo $user['isActive'] ? 'Active' : 'Inactive'; ?>
-                                </td>
-                                <td>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input toggle-switch" type="checkbox" role="switch"
-                                            id="switch-<?php echo $user['_id']; ?>" <?php echo $user['isActive'] ? 'checked' : ''; ?> data-user-id="<?php echo $user['_id']; ?>">
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                <ul class="nav nav-pills d-flex justify-content-center" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active mx-3 text-black" id="user-management-tab" data-bs-toggle="tab"
+                            data-bs-target="#user-management" type="button" role="tab" aria-controls="user-management"
+                            aria-selected="true">User Management</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link mx-3 text-black" id="feedback-tab" data-bs-toggle="tab" data-bs-target="#feedback"
+                            type="button" role="tab" aria-controls="feedback" aria-selected="false">Feedback</button>
+                    </li>
+                </ul>
             </div>
+
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="user-management" role="tabpanel"
+                    aria-labelledby="user-management-tab">
+                    <div class="card m-4 p-4 bg-light">
+                        <h3 class="mb-4">User Management</h3>
+                        <table class="table table-striped rounded-3 overflow-hidden table-bordered ">
+                            <thead>
+                                <tr>
+                                    <th>Full Name</th>
+                                    <th>Email</th>
+                                    <th>Age</th>
+                                    <th>Gender</th>
+                                    <th>Place</th>
+                                    <th>Education Level</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($users as $user): ?>
+                                    <tr>
+                                        <td><?php echo $user['full_name']; ?></td>
+                                        <td><?php echo $user['email']; ?></td>
+                                        <td><?php echo $user['age']; ?></td>
+                                        <td><?php echo $user['gender']; ?></td>
+                                        <td><?php echo $user['place']; ?></td>
+                                        <td><?php echo $user['education_level']; ?></td>
+                                        <td id="status-<?php echo $user['_id']; ?>">
+                                            <?php echo $user['isActive'] ? 'Active' : 'Inactive'; ?>
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input toggle-switch" type="checkbox" role="switch"
+                                                    id="switch-<?php echo $user['_id']; ?>" <?php echo $user['isActive'] ? 'checked' : ''; ?> data-user-id="<?php echo $user['_id']; ?>">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="feedback" role="tabpanel" aria-labelledby="feedback-tab">
+                    <div class="card m-4 p-4 bg-light">
+                        <h3 class="mb-4">Feedback</h3>
+                        <table class="table table-striped rounded-3 overflow-hidden table-bordered ">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Feedback</th>
+                                    <th>Rating</th>
+                                    <th>Place</th>
+                                    <th>Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($feedbackCursor as $feedback): ?>
+                                    <?php
+                                    $user = $userCollection->findOne(
+                                        ["_id" => new MongoDB\BSON\ObjectId($feedback["user_id"])]
+                                    );
+
+                                    if ($user):
+                                        $feedbackTimestamp = $feedback["timestamp"]->toDateTime()->format("Y-m-d H:i:s");
+                                        $userTimestamp = $user["timestamp"]->toDateTime()->format("Y-m-d H:i:s");
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $user["full_name"] . " (" . $user["email"] . ")"; ?></td>
+                                            <td><?php echo $feedback["feedback"]; ?></td>
+                                            <td>
+                                                <?php
+                                                $rating = $feedback["rating"];
+                                                for ($i = 1; $i <= 5; $i++) {
+                                                    if ($i <= $rating) {
+                                                        echo '<i class="fas fa-star text-warning"></i>'; // Solid golden star
+                                                    } else {
+                                                        echo '<i class="far fa-star text-warning"></i>'; // Bordered star
+                                                    }
+                                                }
+                                                ?>
+                                            </td>
+                                            <td><?php echo $user["place"]; ?></td>
+                                            <td><?php echo $feedbackTimestamp; ?></td>
+                                        </tr>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
         </main>
 
         <!-- ======= Footer ======= -->
