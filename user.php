@@ -75,13 +75,14 @@ if ($userData) {
                                 <i class="fas fa-user-circle me-2"></i><?= ucwords($fullName) ?>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                                <li><a class="dropdown-item" href="#">Profile</a></li>
-                                <li><a class="dropdown-item" href="index.php">Home</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="logout.php">Logout</a></li>
-                            </ul>
+    <li><a class="dropdown-item" href="#">Profile</a></li>
+    <li><a class="dropdown-item" href="index.php">Home</a></li>
+    <?php if ($fullName === 'admin'): ?>
+        <li><a class="dropdown-item" href="admin.php">Admin Panel</a></li>
+        <li><hr class="dropdown-divider"></li>
+    <?php endif; ?>
+    <li><a class="dropdown-item" href="logout.php">Logout</a></li>
+</ul>
                         </div>
                     </div>
                 </div>

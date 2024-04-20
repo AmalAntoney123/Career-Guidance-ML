@@ -179,11 +179,14 @@ if ($userData) {
                                 <i class="fas fa-user-circle me-2"></i><?= ucwords($fullName) ?>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                                <li><a class="dropdown-item" href="#">Profile</a></li>
+                                <li><a class="dropdown-item" href="user.php">Profile</a></li>
                                 <li><a class="dropdown-item" href="index.php">Home</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
+                                <?php if ($fullName === 'admin'): ?>
+                                    <li><a class="dropdown-item" href="admin.php">Admin Panel</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                <?php endif; ?>
                                 <li><a class="dropdown-item" href="logout.php">Logout</a></li>
                             </ul>
                         </div>
@@ -216,7 +219,8 @@ if ($userData) {
                                 <div class="card h-100 d-flex justify-content-center align-items-center bg-light p-5">
                                     <div class="container-fluid blue-bg">
                                         <div class="container">
-                                            <h2 class="pb-3 pt-2"><?= $userCareer['career'] ?> Career Path</h2><hr>
+                                            <h2 class="pb-3 pt-2"><?= $userCareer['career'] ?> Career Path</h2>
+                                            <hr>
 
                                             <!--first section-->
                                             <div class="row align-items-center how-it-works">
@@ -303,7 +307,8 @@ if ($userData) {
                                                             <li><?= $certification ?></li>
                                                         <?php } ?>
                                                     </ul>
-                                                </div><hr>
+                                                </div>
+                                                <hr>
                                                 <div class="d-flex justify-content-end mt-3">
                                                     <button type="button" class="btn btn-danger btn-lg" data-bs-toggle="modal"
                                                         data-bs-target="#resetCareerModal">

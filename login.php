@@ -12,29 +12,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve form data
     $email = $_POST["email"]; // Corrected field name
     $password = $_POST["password"]; // Corrected field name
-    
+
     // Check if email and password are provided
     if (!empty($email) && !empty($password)) {
         // Search for the user in MongoDB
         $user = $userCollection->findOne(["email" => $email]);
 
-        if ($user && password_verify($password, $user['password'])) {
-            // User found and password matches, login successful
-            $_SESSION['user'] = $user['_id'];
-            $_SESSION['user_name'] = ucfirst($user['full_name']);
-            if ($user['full_name'] == "admin") {
-                header("Location: user.php");
+        if ($user) {
+            if ($user['isActive']) {
+                if (password_verify($password, $user['password'])) {
+                    // User found, password matches, and status is active
+                    $_SESSION['user'] = $user['_id'];
+                    $_SESSION['user_name'] = ucfirst($user['full_name']);
+
+                    if ($user['full_name'] == "admin") {
+                        $_SESSION['admin'] = $user['_id'];
+                        header("Location: admin.php");
+                    } else {
+                        header("Location: user.php");
+                    }
+                    exit; // Added to stop further execution
+                } else {
+                    // Invalid password
+                    $_SESSION['register'] = "invalid";
+                    header("Location: index.php");
+                    exit; // Added to stop further execution
+                }
             } else {
-                header("Location: user.php");
+                // User is not active
+                $_SESSION['register'] = "inactive";
+                header("Location: index.php");
+                exit; // Added to stop further execution
             }
-            exit; // Added to stop further execution
         } else {
-            // User not found or invalid credentials
+            // User not found
             $_SESSION['register'] = "invalid";
             header("Location: signup.php");
             exit; // Added to stop further execution
         }
     } else {
-        echo "Both email and password are required.";
+        $_SESSION['register'] = "incomplete";
+            header("Location: index.php");
     }
 }
