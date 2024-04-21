@@ -90,7 +90,7 @@ if ($userData) {
         </header>
         <main id="main">
             <div class="container mt-5">
-                <div class="card bg-light">
+                <div class="card bg-light shadow">
                     <div class="card-body">
                         <form id="questionnaireForm" method="get" action="process.php">
                             <div id="questionnaire">
@@ -179,10 +179,10 @@ if ($userData) {
 
             <div class="container my-3">
                 <div class="d-flex justify-content-between">
-                    <button type="button" id="prevBtn" class="btn btn-secondary btn-lg" disabled>Previous</button>
-                    <a type="button" id="resetBtn" class="btn btn-danger btn-lg" href="career_quiz.php">Reset</a>
-                    <button type="button" id="nextBtn" class="btn btn-warning btn-lg">Next</button>
-                    <button type="submit" id="submitBtn" class="btn btn-success btn-lg"
+                    <button type="button" id="prevBtn" class="btn btn-secondary btn-lg shadow" disabled>Previous</button>
+                    <a type="button" id="resetBtn" class="btn btn-danger btn-lg shadow" href="career_quiz.php">Reset</a>
+                    <button type="button" id="nextBtn" class="btn btn-warning btn-lg shadow">Next</button>
+                    <button type="submit" id="submitBtn" class="btn btn-success btn-lg shadow"
                         style="display: none;">Submit</button>
                 </div>
             </div>

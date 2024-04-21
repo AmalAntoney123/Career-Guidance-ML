@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<?php session_start();
+?>
 <html lang="en">
 
 <head>
@@ -78,34 +80,40 @@
 
     <!-- ======= Blog Section ======= -->
     <section id="signup" class="signup">
+      <script>
+       
+      </script>
       <div class="container" data-aos="fade-up">
         <div class="section-title">
           <h2>Sign Up</h2>
         </div>
-        <form action="register.php" method="post">
-          <div class="row gy-3">\
+        <form action="register.php" method="post" id="registrationForm">
+          <div class="row gy-3">
             <?php
-            session_start();
             if (isset($_SESSION['register']) && $_SESSION['register'] === 'invalid') {
               echo '<div class="alert alert-danger">User not found. Please register first.</div>';
               unset($_SESSION['register']);
             }
             ?>
             <div class="col-md-12">
-              <input type="text" name="name" class="form-control" placeholder="Name" required>
-            </div>
-            <div class="col-md-12 ">
-              <input type="email" class="form-control" name="email" placeholder="Email" required>
-            </div>
-
-            <div class="col-md-12">
-              <input type="password" class="form-control" name="password" placeholder="password" required>
+              <input type="text" name="name" class="form-control" placeholder="Name" required data-bs-toggle="tooltip"
+                data-bs-placement="right" title="Please enter your name">
             </div>
             <div class="col-md-12">
-              <input type="number" name="age" class="form-control" placeholder="Age" required>
+              <input type="email" class="form-control" name="email" placeholder="Email" required
+                data-bs-toggle="tooltip" data-bs-placement="right" title="Please enter a valid email address">
             </div>
             <div class="col-md-12">
-              <select name="gender" class="form-select" required>
+              <input type="password" class="form-control" name="password" placeholder="Password" required
+                data-bs-toggle="tooltip" data-bs-placement="right" title="Please enter a password">
+            </div>
+            <div class="col-md-12">
+              <input type="number" name="age" class="form-control" placeholder="Age" required data-bs-toggle="tooltip"
+                data-bs-placement="right" title="Please enter your age">
+            </div>
+            <div class="col-md-12">
+              <select name="gender" class="form-select" required data-bs-toggle="tooltip" data-bs-placement="right"
+                title="Please select a gender">
                 <option value="" selected disabled>Select Gender</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
@@ -113,15 +121,18 @@
               </select>
             </div>
             <div class="col-md-12">
-              <input type="text" name="place" class="form-control" placeholder="Place" required>
+              <input type="text" name="place" class="form-control" placeholder="Place" required data-bs-toggle="tooltip"
+                data-bs-placement="right" title="Please enter your place">
             </div>
             <div class="col-md-12">
-              <input type="text" name="education_level" class="form-control" placeholder="Education Level" required>
+              <input type="text" name="education_level" class="form-control" placeholder="Education Level" required
+                data-bs-toggle="tooltip" data-bs-placement="right" title="Please enter your education level">
             </div>
             <div class="col-md-12 text-center">
               <button type="submit" class="btn btn-primary">Submit</button>
             </div>
           </div>
+        </form>
       </div>
     </section>
 

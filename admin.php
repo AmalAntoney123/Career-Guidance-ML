@@ -118,7 +118,7 @@ if ($userData) {
         </header>
 
         <main class="container">
-            <div class="card m-4 p-4 bg-light">
+            <div class="card m-4 p-4 bg-light shadow">
                 <ul class="nav nav-pills d-flex justify-content-center" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active mx-3 text-black" id="user-management-tab" data-bs-toggle="tab"
@@ -135,7 +135,7 @@ if ($userData) {
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="user-management" role="tabpanel"
                     aria-labelledby="user-management-tab">
-                    <div class="card m-4 p-4 bg-light">
+                    <div class="card m-4 p-4 bg-light shadow">
                         <h3 class="mb-4">User Management</h3>
                         <table class="table table-striped rounded-3 overflow-hidden table-bordered ">
                             <thead>
@@ -175,7 +175,7 @@ if ($userData) {
                     </div>
                 </div>
                 <div class="tab-pane fade" id="feedback" role="tabpanel" aria-labelledby="feedback-tab">
-                    <div class="card m-4 p-4 bg-light">
+                    <div class="card m-4 p-4 bg-light shadow">
                         <h3 class="mb-4">Feedback</h3>
                         <table class="table table-striped rounded-3 overflow-hidden table-bordered ">
                             <thead>

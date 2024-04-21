@@ -94,7 +94,7 @@ if ($userData) {
         </header>
         <main id="main">
             <div class="container my-5">
-                <div class="card bg-light">
+                <div class="card bg-light shadow">
                     <div class="card-body">
                         <h3 class="card-title">Careers in <span id="subject"></span></h3>
                         <p class="card-text h-5">Based on the analysis, here are three potential career paths you can

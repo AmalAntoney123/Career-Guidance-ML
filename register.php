@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             "gender" => $gender,
             "place" => $place,
             "education_level" => $educationLevel,
-            "status" => "active",
+            "isActive" => true,
             "timestamp" => new MongoDB\BSON\UTCDateTime()
         ];
 

@@ -199,7 +199,7 @@ if ($userData) {
             <div class="container my-4">
                 <div class="row">
                     <div class="col-md-3 mt-3">
-                        <div class="list-group">
+                        <div class="list-group shadow">
                             <a href="user.php" class="list-group-item list-group-item-action">Profile</a>
                             <a href="#" class="list-group-item list-group-item-action active">Career Path</a>
                         </div>
@@ -216,7 +216,7 @@ if ($userData) {
                             $universities = $coursePathData['data']['Universities']->getArrayCopy();
                             ?>
                             <div class="col-md-9 mt-3">
-                                <div class="card h-100 d-flex justify-content-center align-items-center bg-light p-5">
+                                <div class="card h-100 d-flex justify-content-center align-items-center bg-light p-5 shadow">
                                     <div class="container-fluid blue-bg">
                                         <div class="container">
                                             <h2 class="pb-3 pt-2"><?= $userCareer['career'] ?> Career Path</h2>
@@ -323,14 +323,14 @@ if ($userData) {
                                                     } else {
                                                         // User has not given feedback yet, show the "Leave Feedback" button
                                                         ?>
-                                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                                        <button type="button" class="btn btn-lg btn-warning shadow" data-bs-toggle="modal"
                                                             data-bs-target="#feedbackModal">
                                                             Leave Feedback
                                                         </button>
                                                         <?php
                                                     }
                                                     ?></div>
-                                                    <button type="button" class="btn btn-danger btn-lg" data-bs-toggle="modal"
+                                                    <button type="button" class="btn btn-danger btn-lg shadow" data-bs-toggle="modal"
                                                         data-bs-target="#resetCareerModal">
                                                         Reset Career
                                                     </button>
@@ -346,7 +346,7 @@ if ($userData) {
                             ?>
                             <div class="col-md-9 mt-3">
                                 <div class="h-100 w-100 d-flex justify-content-center align-items-center">
-                                    <div class="card rounded bg-light">
+                                    <div class="card rounded bg-light shadow">
                                         <div class="card-body">
                                             <div class="container my-5">
                                                 <div class="row">
@@ -368,7 +368,7 @@ if ($userData) {
                         ?>
                         <div class="col-md-9 mt-3">
                             <div class="h-100 w-100 d-flex justify-content-center align-items-center" style="width:100%">
-                                <div class="card rounded bg-light">
+                                <div class="card rounded bg-light shadow w-100">
                                     <div class="card-body">
                                         <div class="container my-5">
                                             <div class="row">

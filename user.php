@@ -94,8 +94,8 @@ if ($userData) {
 
             <div class="container my-4">
                 <div class="row">
-                    <div class="col-md-3">
-                        <div class="list-group">
+                    <div class="col-md-3 ">
+                        <div class="list-group shadow">
                             <a href="#" class="list-group-item list-group-item-action active">Profile</a>
                             <a href="career_view.php" class="list-group-item list-group-item-action">Career Path</a>
                         </div>
@@ -112,7 +112,7 @@ if ($userData) {
                         </div>
                     </div>
                     <div class="col-md-9">
-                        <div class="card rounded">
+                        <div class="card rounded shadow">
                             <div class="card-body">
                                 <div class="row">
 
